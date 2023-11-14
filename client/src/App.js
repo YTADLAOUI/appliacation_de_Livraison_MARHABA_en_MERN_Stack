@@ -20,7 +20,7 @@ function App() {
 
 	return (
 		<>
-		    <Navbar />
+		    {/* <Navbar /> */}
 			<Routes>
 				{/* {user && <Route path="/" exact element={<Main />} />} */}
 				<Route path="/signup" exact element={<Signup />} />

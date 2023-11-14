@@ -1,10 +1,10 @@
 import React from "react";
-// import Navbar from "../header/navbar";
+import Navbar from "../header/navbar";
 
 const ClientWelcomePage = () => {
   return (
     <>
-    {/* <Navbar /> */}
+    <Navbar />
     <div>
       <h1>Welcome, Client!</h1>
       <p>This is your personalized welcome page as a client.</p>
