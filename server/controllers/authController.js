@@ -54,7 +54,7 @@ const userRegistration = async (req, res) => {
             phone: phone,
             address: address,
             role: role,
-            // tc: tc,
+            isDeleted: false,
           });
 
           await doc.save();
