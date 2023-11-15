@@ -80,7 +80,7 @@ const userRegistration = async (req, res) => {
           let info = await transporter.sendMail({
             from: process.env.EMAIL_FROM,
             to: saved_user.email,
-            subject: "Marhaba - activate your account",
+            subject: "Marhaba - activate your account:",
             html: `<a href=${link}>Click Here</a> activate your account`,
           });
 
