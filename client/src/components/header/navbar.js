@@ -66,6 +66,9 @@ function Navbar() {
               <>
               
                 <div className="d-flex">
+                    <span className="btn btn-outline-danger me-1" ><i className='fas fa-shopping-cart'></i></span>
+                </div>
+                <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>
               </>
