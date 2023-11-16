@@ -26,7 +26,6 @@ const restaurantSchema = new mongoose.Schema({
         },
     },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
-    dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }],
 });
 
 restaurantSchema.index({ location: '2dsphere' });

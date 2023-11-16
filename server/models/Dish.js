@@ -13,6 +13,11 @@ const dishSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    restaurant: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Restaurant',
+        required: true,
+    },
 });
 
 module.exports = mongoose.model('Dish', dishSchema);

@@ -2,6 +2,9 @@ const UserModel = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
+const Category = require('../models/Category');
+const Dish = require('../models/Dish');
+
 
 function getManager(req, res) {
     let token = req.cookies.authToken;
@@ -18,7 +21,7 @@ function getManager(req, res) {
 
 async function createRestaurant(req, res) {
     try {
-        const { name, description, coordinates } = req.body;
+        const { name, description, coordinates, categoryId } = req.body;
         const { lat, long } = coordinates;
 
         const newRestaurant = new Restaurant({
@@ -30,6 +33,7 @@ async function createRestaurant(req, res) {
                     long,
                 },
             },
+            categories: [categoryId],
         });
 
         const savedRestaurant = await newRestaurant.save();
@@ -39,5 +43,36 @@ async function createRestaurant(req, res) {
         res.status(500).json({ error: error.message });
     }
 }
+async function createCategory(req, res) {
+    try {
+        const { name } = req.body;
 
-module.exports = { getManager, createRestaurant };
+        const newCategory = new Category({ name });
+        const savedCategory = await newCategory.save();
+
+        res.status(201).json(savedCategory);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+async function createDish(req, res) {
+    try {
+        const { name, description, price, restaurantId } = req.body;
+
+        const newDish = new Dish({
+            name,
+            description,
+            price,
+            restaurant: restaurantId, // Link the dish to a specific restaurant
+        });
+
+        const savedDish = await newDish.save();
+
+        res.status(201).json(savedDish);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = { getManager, createRestaurant, createCategory, createDish };
