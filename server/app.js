@@ -9,11 +9,13 @@ const deliveryRoutes = require("./routes/deliveryRoutes")
 const managerRoutes = require("./routes/managerRoutes")
 const roleRoutes = require("./routes/roleRoutes")
 const swagger = require("./swagger")
+const restaurantRoutes = require('./routes/restaurantRoutes');
+
 
 connectDb();
 
 const app = express();
-const port =  process.env.PORT || 5555;
+const port = process.env.PORT || 5555;
 
 // swagger
 swagger(app);
@@ -33,6 +35,7 @@ app.use("/api/user", managerRoutes)
 
 app.use("/api/role", roleRoutes)
 
+app.use('/api/restaut', restaurantRoutes);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
