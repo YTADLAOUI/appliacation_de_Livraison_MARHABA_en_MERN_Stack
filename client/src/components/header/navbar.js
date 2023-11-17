@@ -64,7 +64,7 @@ function Navbar() {
 
             {isAuthenticated() && (
               <>
-              
+              <button>me</button>
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>
