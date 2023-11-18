@@ -64,7 +64,6 @@ function Navbar() {
 
             {isAuthenticated() && (
               <>
-              <button>me</button>
                 <div className="d-flex">
                     <span className="btn btn-outline-danger me-1" ><i className='fas fa-shopping-cart'></i></span>
                 </div>
