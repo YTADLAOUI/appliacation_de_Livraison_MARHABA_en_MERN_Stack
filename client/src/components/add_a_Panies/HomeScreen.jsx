@@ -3,6 +3,7 @@ import products from '../../products'
 import axios from 'axios'
 import { Col, Container, Row } from 'react-bootstrap'
 import Product from './Product'
+import Navbar from '../header/navbar'
 const HomeScreen = () => {
 // const [products,setProduct]=useState([]);
   useEffect(()=>{
@@ -15,6 +16,7 @@ const HomeScreen = () => {
   )
   return (
     <main>
+       < Navbar /> 
       <Container>
         <h1 className='my-2'> 
           Latest Products 
