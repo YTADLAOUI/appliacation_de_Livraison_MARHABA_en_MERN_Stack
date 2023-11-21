@@ -1,10 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 
 function Navbar() {
 
   const navigate = useNavigate();
+  const prd = useSelector((state) => state.valueCart.value);
 
   const loggOut =()=>{
     fetch('http://localhost:1111/api/auth/loggeduser')
@@ -18,11 +20,15 @@ function Navbar() {
     .catch()
   }
 
+  const cart=()=>{
+    navigate("/cartShopping")
+  }
   const isAuthenticated = () => {
     const jwt = localStorage.getItem('token');
     if(jwt) return JSON.parse(jwt);
     return false
   }
+  console.log(prd.list.length,"nav")
   return (
     <header>
       <nav className="navbar navbar-expand-lg">
@@ -34,7 +40,7 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page">Home</a>
+                <i className="nav-link active" aria-current="page" onClick={()=>navigate("/home")}>Home</i>
               </li>
               <li className="nav-item">
                 <a className="nav-link">About</a>
@@ -51,7 +57,7 @@ function Navbar() {
             </ul>
 
             
-            {!isAuthenticated() &&  (
+            {/* {!isAuthenticated() &&  (
               <>
                 <form className="d-flex me-3">
                     <button className="btn btn-outline-danger" type="submit">Sign In</button>
@@ -62,16 +68,16 @@ function Navbar() {
               </>  
             )} 
 
-            {isAuthenticated() && (
+            {isAuthenticated() && ( */}
               <>
                 <div className="d-flex">
-                    <span className="btn btn-outline-danger me-1" ><i className='fas fa-shopping-cart'></i></span>
+            <span className="btn btn-outline-danger me-1" onClick={cart} ><i className='fas fa-shopping-cart'><span>{prd?.list.length}</span></i></span>
                 </div>
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>
               </>
-            )}
+            {/* )} */}
            
           </div>
         </div>

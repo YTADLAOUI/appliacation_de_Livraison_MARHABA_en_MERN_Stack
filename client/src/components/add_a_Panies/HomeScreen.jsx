@@ -5,15 +5,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Product from './Product'
 import Navbar from '../header/navbar'
 const HomeScreen = () => {
-// const [products,setProduct]=useState([]);
-  useEffect(()=>{
-  //   const fetchProducts = async ()=>{
-  //     const {data}= await axios.get('/api/products')
-  //     setProduct(data);
-    }
-  //   fetchProducts()
-  // },[]
-  )
+
   return (
     <main>
        < Navbar /> 
