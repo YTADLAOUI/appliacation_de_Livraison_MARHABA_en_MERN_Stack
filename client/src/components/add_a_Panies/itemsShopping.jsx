@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Card, CardTitle, Container } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
-import { updateQuantity } from '../../features/addCart/addToCart';
+import { deleteItem, updateQuantity } from '../../features/addCart/addToCart';
 
 
 
@@ -18,6 +18,10 @@ const ItemsShopping = ({ product }) => {
   }
   const handelDecrise=()=>{
     setQuantity((pervent=>pervent>1 ? pervent=pervent-1:pervent))
+  }
+  const handelRemove=()=>{
+    console.log('first')
+    dispatch(deleteItem({_id:product?._id}))
   }
   useEffect(()=>{
     dispatch(updateQuantity({_id:product?._id,quantity}))
@@ -39,7 +43,7 @@ const ItemsShopping = ({ product }) => {
             <input type="number"className='form-control' value={quantity} onChange={handelChange}/>
             <div className='d-flex  justify-content-between mt-2'>
             <Button  variant="warning" onClick={handelDecrise}>-</Button>
-            <Button variant="danger">x</Button>
+            <Button variant="danger" onClick={handelRemove}>x</Button>
             </div>
         </div>
         </Container>
