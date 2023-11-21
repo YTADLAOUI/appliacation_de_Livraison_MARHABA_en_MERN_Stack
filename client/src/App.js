@@ -13,7 +13,9 @@ import Navbar from "./components/header/navbar";
 import 'bootstrap/dist/css/bootstrap.css'
 import '../src/style.css'
 import './components/sign.css'
-
+import HomeScreen from "./components/add_a_Panies/HomeScreen";
+import Product from "./components/add_a_Panies/Product";
+import CartShopping from "./components/add_a_Panies/cartShopping"
 
 function App() {
 	// const user = localStorage.getItem("token");
@@ -31,7 +33,9 @@ function App() {
 				<Route path="/active-email/:token" element={<EmailVerify />} />
 				<Route path="/send-reset-password-email" element={<ForgotPassword />} />
 				<Route path="/reset-password" element={<PasswordReset />} />
-			
+				<Route path="/home" element={<HomeScreen/>} />
+				<Route path="/prod" element={<Product/>} />
+				<Route path="//cartShopping" element={<CartShopping/>} />
 
 
 

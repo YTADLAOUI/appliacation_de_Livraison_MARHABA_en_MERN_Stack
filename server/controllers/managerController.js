@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
-const Dish = require('../models/Dish');
+const Dish = require('../models/Dishe');
 
 
 function getManager(req, res) {
