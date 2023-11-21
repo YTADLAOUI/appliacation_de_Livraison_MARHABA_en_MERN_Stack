@@ -27,7 +27,7 @@ const check = state.value.list.findIndex(product=>product._id===action.payload._
       state.value.total=state.value.list.reduce((sum,product)=>sum+ +product?.price*product?.quantity,0)
   },
   deleteItem(state,action){
-    console.log("ff")
+
       state.value.list=state.value.list.filter(product => product._id !== action.payload._id)
       state.value.total=state.value.list.reduce((sum,product)=>sum+ +product?.price*product?.quantity,0)
   }
