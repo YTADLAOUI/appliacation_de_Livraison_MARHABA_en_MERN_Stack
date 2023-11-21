@@ -13,4 +13,3 @@ router.get("/manager/me", getManager);
 module.exports = router;
 
 
-

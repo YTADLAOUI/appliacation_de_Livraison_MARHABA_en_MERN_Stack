@@ -45,7 +45,7 @@ const PasswordReset = () => {
 
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     try {
       if (password !== confirmPassword) {
         setError("Password and Confirm Password do not match");
