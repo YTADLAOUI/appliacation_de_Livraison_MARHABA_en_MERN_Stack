@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
 const Dish = require('../models/Dishe');
+const upload = require('../config/multerConfig')
 
 
 function getManager(req, res) {
@@ -20,29 +21,36 @@ function getManager(req, res) {
 }
 
 async function createRestaurant(req, res) {
-    try {
-        const { name, description, coordinates, categoryId } = req.body;
-        const { lat, long } = coordinates;
+  try {
+    const { name, description, lat, long, categoryId } = req.body;
 
-        const newRestaurant = new Restaurant({
-            name,
-            description,
-            location: {
-                coordinates: {
-                    lat,
-                    long,
-                },
-            },
-            categories: [categoryId],
-        });
 
-        const savedRestaurant = await newRestaurant.save();
 
-        res.status(201).json(savedRestaurant);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
     }
+
+    const newRestaurant = new Restaurant({
+      name,
+      description,
+      location: {
+        coordinates: {
+          lat,
+          long,
+        },
+      },
+      categories: [categoryId],
+      photo: req.file.path // Save the file path in the 'photo' field
+    });
+
+    const savedRestaurant = await newRestaurant.save();
+
+    res.status(201).json(savedRestaurant);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
+
 async function createCategory(req, res) {
     try {
         const { name } = req.body;
@@ -75,4 +83,4 @@ async function createDish(req, res) {
     }
 }
 
-module.exports = { getManager, createRestaurant, createCategory, createDish };
+module.exports = { getManager, createRestaurant, createCategory, createDish ,upload};
