@@ -7,7 +7,7 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css"
 const MapDerection = () => {
     const map = useMap();
     let dMark = L.icon({
-        iconUrl:"/Dman.png",
+        iconUrl:"images/Dman.png",
         iconSize: [50,50]
     });
     useEffect(()=>{

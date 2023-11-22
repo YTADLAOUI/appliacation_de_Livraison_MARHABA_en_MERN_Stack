@@ -2,8 +2,9 @@ import { MapContainer, TileLayer } from "react-leaflet"
 import "leaflet-control-geocoder/dist/Control.Geocoder.css"
 import "leaflet-control-geocoder/dist/Control.Geocoder.js"
 import "./map.css"
-import MapDerection from "../tracking"
+import MapDerection from "../tracking/MapDerection"
 import { useEffect, useState } from "react"
+import Navbar from '../header/navbar'
 
 const Map = () => {
   // const position = [31.7917, -7.0926]
@@ -26,6 +27,8 @@ const Map = () => {
   }, []);
 
   return (
+    <>
+    < Navbar /> 
       <div>
         {position && (
          <MapContainer center={position} zoom={8} scrollWheelZoom={false}>
@@ -37,7 +40,7 @@ const Map = () => {
         </MapContainer>
          )}
         </div>
-        
+        </> 
   )
 }
 

@@ -16,6 +16,7 @@ import './components/sign.css'
 import HomeScreen from "./components/add_a_Panies/HomeScreen";
 import Product from "./components/add_a_Panies/Product";
 import CartShopping from "./components/add_a_Panies/cartShopping"
+import Map from "./components/tracking/Map"
 
 function App() {
 	// const user = localStorage.getItem("token");
@@ -36,6 +37,7 @@ function App() {
 				<Route path="/home" element={<HomeScreen/>} />
 				<Route path="/prod" element={<Product/>} />
 				<Route path="//cartShopping" element={<CartShopping/>} />
+				<Route path="/trackOrder" element={<Map/>} />
 
 
 
