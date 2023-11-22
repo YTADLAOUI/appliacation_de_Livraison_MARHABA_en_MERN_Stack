@@ -5,6 +5,7 @@ import "./map.css"
 import MapDerection from "../tracking/MapDerection"
 import { useEffect, useState } from "react"
 import Navbar from '../header/navbar'
+import L from "leaflet"
 
 const Map = () => {
   // const position = [31.7917, -7.0926]
@@ -31,7 +32,7 @@ const Map = () => {
     < Navbar /> 
       <div>
         {position && (
-         <MapContainer center={position} zoom={8} scrollWheelZoom={false}>
+         <MapContainer center={position} zoom={8} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -43,5 +44,11 @@ const Map = () => {
         </> 
   )
 }
+
+let restoMark = L.icon({
+    iconUrl:"images/resto.png",
+    iconSize: [40,40]
+});
+L.Marker.prototype.options.icon = restoMark;
 
 export default Map

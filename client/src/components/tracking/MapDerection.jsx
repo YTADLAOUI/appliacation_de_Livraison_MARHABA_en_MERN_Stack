@@ -10,10 +10,15 @@ const MapDerection = () => {
         iconUrl:"images/Dman.png",
         iconSize: [50,50]
     });
+    let homeMark = L.icon({
+        iconUrl:"images/home.png",
+        iconSize: [40,40]
+    });
+    
     useEffect(()=>{
         let deliveryMark = L.marker([32.559, -7.5332], {icon: dMark}).addTo(map);
        map.on("click", function(e){
-        L.marker([e.latlng.lat, e.latlng.lng]).addTo(map)
+        L.marker([e.latlng.lat, e.latlng.lng], {icon: homeMark}).addTo(map)
         L.Routing.control({
             waypoints:[
                 // L.latLng(e.latlng.lat, e.latlng.lng), L.latLng()
