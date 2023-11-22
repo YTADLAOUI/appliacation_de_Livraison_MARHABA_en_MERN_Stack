@@ -39,7 +39,7 @@ const MapDerection = () => {
           })
           .addTo(map);
        })
-    },[])
+    }, [])
   return null
 }
 
