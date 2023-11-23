@@ -6,6 +6,7 @@ import Login from "./components/login";
 import ClientWelcomePage from "./components/client/welcome";
 import DeliveryWelcomePage from "./components/delivery/welcome";
 import ManagerWelcomePage from "./components/manager/welcome";
+import Add_restaut from "./components/manager/add_restaut";
 import EmailVerify from "./components/verifyemail/index";
 import ForgotPassword from "./components/forgotPassword";
 import PasswordReset from "./components/PasswordReset";
@@ -36,6 +37,7 @@ function App() {
 				<Route path="/home" element={<HomeScreen/>} />
 				<Route path="/prod" element={<Product/>} />
 				<Route path="//cartShopping" element={<CartShopping/>} />
+				<Route path="/add_restaut" element={<Add_restaut/>} />
 
 
 
