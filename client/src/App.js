@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
+import { Route, Routes,  } from "react-router-dom";
 // import Main from "./components/main";
 import Signup from "./components/signup";
 import Login from "./components/login";
@@ -9,7 +9,8 @@ import ManagerWelcomePage from "./components/manager/welcome";
 import EmailVerify from "./components/verifyemail/index";
 import ForgotPassword from "./components/forgotPassword";
 import PasswordReset from "./components/PasswordReset";
-import Navbar from "./components/header/navbar";
+import Home from "./components/home";
+import Restaurant from "./components/pages/Restaurant";
 import 'bootstrap/dist/css/bootstrap.css'
 import '../src/style.css'
 import './components/sign.css'
@@ -23,6 +24,7 @@ function App() {
 		    {/* <Navbar /> */}
 			<Routes>
 				{/* {user && <Route path="/" exact element={<Main />} />} */}
+				<Route path="/" exact element={<Home />} />
 				<Route path="/signup" exact element={<Signup />} />
 				<Route path="/login" exact element={<Login />} />
 				<Route path="/api/user/client/me" exact element={<ClientWelcomePage />} />
@@ -31,11 +33,12 @@ function App() {
 				<Route path="/active-email/:token" element={<EmailVerify />} />
 				<Route path="/send-reset-password-email" element={<ForgotPassword />} />
 				<Route path="/reset-password" element={<PasswordReset />} />
+				<Route path="/restaurant/search/:name?" element={<Restaurant />} />
 			
 
 
 
-				<Route path="/" element={<Navigate replace to="/login" />} />
+				{/* <Route path="/" element={<Navigate replace to="/login" />} /> */}
 			</Routes>
 		</>	
 	);

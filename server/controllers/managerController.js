@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
-const Dish = require('../models/Dish');
+const Dishe = require('../models/Dishe');
 
 
 function getManager(req, res) {
@@ -21,7 +21,7 @@ function getManager(req, res) {
 
 async function createRestaurant(req, res) {
     try {
-        const { name, description, coordinates, categoryId } = req.body;
+        const { name, description, coordinates, categoryId, image } = req.body;
         const { lat, long } = coordinates;
 
         const newRestaurant = new Restaurant({
@@ -34,6 +34,7 @@ async function createRestaurant(req, res) {
                 },
             },
             categories: [categoryId],
+            image,
         });
 
         const savedRestaurant = await newRestaurant.save();
@@ -43,6 +44,39 @@ async function createRestaurant(req, res) {
         res.status(500).json({ error: error.message });
     }
 }
+
+async function getAllRestaurants(req, res) {
+    try {
+      const restaurants = await Restaurant.find();
+      res.status(200).json(restaurants);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+}
+
+async function searchRestaurant(req, res) {
+    try {
+      const { name } = req.params;
+  
+      const restaurants = await Restaurant.find({
+        name: { $regex: name, $options: "i" },
+      });
+  
+      res.status(200).json(restaurants);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+}
+
+async function getAllCategories(req, res) {
+    try {
+      const categories = await Category.find();
+      res.status(200).json(categories);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+}
+
 async function createCategory(req, res) {
     try {
         const { name } = req.body;
@@ -75,4 +109,4 @@ async function createDish(req, res) {
     }
 }
 
-module.exports = { getManager, createRestaurant, createCategory, createDish };
+module.exports = { getManager, createRestaurant, createCategory, createDish, getAllRestaurants, getAllCategories, searchRestaurant };

@@ -1,3 +1,4 @@
+const { string } = require('joi');
 const mongoose = require('mongoose');
 
 const restaurantSchema = new mongoose.Schema({
@@ -26,6 +27,10 @@ const restaurantSchema = new mongoose.Schema({
         },
     },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+    image: {
+        type: String, 
+        require: true,
+    }
 });
 
 restaurantSchema.index({ location: '2dsphere' });

@@ -24,8 +24,7 @@ function Navbar() {
     return false
   }
   return (
-    <header>
-      <nav className="navbar navbar-expand-lg">
+      <nav className="navbar navbar-expand-lg bg-white fixed-top">
         <div className="container">
           <a className="navbar-brand">Marhaba</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +73,6 @@ function Navbar() {
           </div>
         </div>
       </nav>
-    </header>
   );
 }
 
