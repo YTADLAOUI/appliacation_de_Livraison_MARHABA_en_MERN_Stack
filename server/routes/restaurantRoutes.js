@@ -6,7 +6,7 @@ const { createDish } = require('../controllers/managerController');
 const upload = require('../config/multerConfig')
 const multer = require('multer');
 
-router.post('/restaurants',upload.single('photo'), createRestaurant);
+router.post('/restaurants', createRestaurant);
 router.post('/categories', createCategory);
 router.post('/dishes', createDish);
 

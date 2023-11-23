@@ -13,6 +13,9 @@ const dishSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    photo: {
+        type: String, 
+    },
     restaurant: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
