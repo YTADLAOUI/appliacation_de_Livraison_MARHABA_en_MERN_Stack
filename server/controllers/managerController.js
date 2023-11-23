@@ -40,7 +40,7 @@ async function createRestaurant(req, res) {
         },
       },
       categories: [categoryId],
-      photo: req.file.path // Save the file path in the 'photo' field
+      photo: req.file.path 
     });
 
     const savedRestaurant = await newRestaurant.save();
