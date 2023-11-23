@@ -5,7 +5,7 @@ const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
 const Dish = require('../models/Dishe');
 const upload = require('../config/multerConfig')
-
+const fs = require('fs');
 
 function getManager(req, res) {
     let token = req.cookies.authToken;
@@ -22,13 +22,12 @@ function getManager(req, res) {
 
 async function createRestaurant(req, res) {
   try {
-    const { name, description, lat, long, categoryId } = req.body;
+    const { name, description, lat, long, categoryId,photo  } = req.body;
 
-
-
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
+    
+    // const imageBuffer = Buffer.from(photo, 'base64');
+    // const filename = `restaurant_${Date.now()}.png`;
+    // fs.writeFileSync(`images/uploads/${filename}`, imageBuffer, 'base64');
 
     const newRestaurant = new Restaurant({
       name,
@@ -40,7 +39,7 @@ async function createRestaurant(req, res) {
         },
       },
       categories: [categoryId],
-      photo: req.file.path 
+      photo, 
     });
 
     const savedRestaurant = await newRestaurant.save();
@@ -72,7 +71,7 @@ async function createDish(req, res) {
             name,
             description,
             price,
-            restaurant: restaurantId, // Link the dish to a specific restaurant
+            restaurant: restaurantId, 
         });
 
         const savedDish = await newDish.save();
