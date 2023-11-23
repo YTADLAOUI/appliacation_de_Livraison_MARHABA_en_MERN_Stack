@@ -6,6 +6,7 @@ import Login from "./components/login";
 import ClientWelcomePage from "./components/client/welcome";
 import DeliveryWelcomePage from "./components/delivery/welcome";
 import ManagerWelcomePage from "./components/manager/welcome";
+import Add_restaut from "./components/manager/add_restaut";
 import EmailVerify from "./components/verifyemail/index";
 import ForgotPassword from "./components/forgotPassword";
 import PasswordReset from "./components/PasswordReset";
@@ -14,7 +15,9 @@ import Restaurant from "./components/pages/Restaurant";
 import 'bootstrap/dist/css/bootstrap.css'
 import '../src/style.css'
 import './components/sign.css'
-
+import HomeScreen from "./components/add_a_Panies/HomeScreen";
+import Product from "./components/add_a_Panies/Product";
+import CartShopping from "./components/add_a_Panies/cartShopping"
 
 function App() {
 	// const user = localStorage.getItem("token");
@@ -35,6 +38,10 @@ function App() {
 				<Route path="/reset-password" element={<PasswordReset />} />
 				<Route path="/restaurant/search/:name?" element={<Restaurant />} />
 			
+				<Route path="/home" element={<HomeScreen/>} />
+				<Route path="/prod" element={<Product/>} />
+				<Route path="//cartShopping" element={<CartShopping/>} />
+				<Route path="/add_restaut" element={<Add_restaut/>} />
 
 
 

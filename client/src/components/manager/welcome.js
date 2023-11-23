@@ -16,6 +16,8 @@ const ManagerWelcomePage = () => {
                 <button onClick={() => { /* Add another manager-specific functionality here */ }}>
                     Manager Action 2
                 </button>
+
+                
             </div>
         </>
     );

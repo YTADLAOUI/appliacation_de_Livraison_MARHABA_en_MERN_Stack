@@ -27,10 +27,10 @@ const restaurantSchema = new mongoose.Schema({
         },
     },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
-    image: {
+    photo: {
         type: String, 
-        require: true,
-    }
+        required: true,
+    },
 });
 
 restaurantSchema.index({ location: '2dsphere' });
