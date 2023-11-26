@@ -30,7 +30,8 @@ const Login = () => {
 		try {
 			const url = "http://localhost:1111/api/auth/login";
 			const { data: res } = await axios.post(url, data);
-			localStorage.setItem("token", JSON.stringify(data));
+      // console.log()
+			localStorage.setItem("token", JSON.stringify(res));
       console.log(res.role)
       switch (res.role) {
         case "manager":

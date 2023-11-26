@@ -29,8 +29,9 @@ const ItemsShopping = ({ product }) => {
    },[quantity,product?._id])
   return (
     <>
-      <Card className='my-3 p-3 rounded'>
-            <Card.Img src={product.image} variant='top' />      
+    
+      <Card className='my-3 p-3 rounded '  >
+            <Card.Img src={product.image} variant='top'  />      
         <Card.Body>
                     <CardTitle as="div"> 
                       <strong>{product.name}</strong>

@@ -168,7 +168,8 @@ const userLogin = async (req, res) => {
             status: "success",
             message: "Login success",
             token: token,
-            role: user.role.name
+            role: user.role.name,
+            user:user
           });
         } else {
           res.status(401).send({

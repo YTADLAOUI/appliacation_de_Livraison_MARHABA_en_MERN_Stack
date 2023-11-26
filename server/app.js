@@ -8,8 +8,10 @@ const clientRoutes = require("./routes/clientRoutes")
 const deliveryRoutes = require("./routes/deliveryRoutes")
 const managerRoutes = require("./routes/managerRoutes")
 const roleRoutes = require("./routes/roleRoutes")
+const orderRoute = require("./routes/orderRoute")
 const swagger = require("./swagger")
 const restaurantRoutes = require('./routes/restaurantRoutes');
+const OrderController = require("./controllers/OrderControllrt");
 
 
 connectDb();
@@ -32,7 +34,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", clientRoutes);
 app.use("/api/user", deliveryRoutes);
 app.use("/api/user", managerRoutes)
-
+app.use("/api/order",orderRoute)
 app.use("/api/role", roleRoutes)
 
 app.use('/api/restaut', restaurantRoutes);
