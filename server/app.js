@@ -10,12 +10,22 @@ const managerRoutes = require("./routes/managerRoutes")
 const roleRoutes = require("./routes/roleRoutes")
 const swagger = require("./swagger")
 const restaurantRoutes = require('./routes/restaurantRoutes');
-
+const {createServer} = require('http');
+const {Server} = require('socket.io');
 
 connectDb();
 
 const app = express();
-const port = process.env.PORT || 5555;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+    cors: {
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"],
+    }
+});
+
+
+const port = process.env.PORT || 1111;
 
 // swagger
 swagger(app);
@@ -37,6 +47,18 @@ app.use("/api/role", roleRoutes)
 
 app.use('/api/restaut', restaurantRoutes);
 
-app.listen(port, () => {
+io.on("connection", (socket) => {
+    console.log("user connected");
+
+    socket.on("disconnect", () => {
+      console.log("user disconnected");
+    });
+
+    socket.on("error", (err) => {
+        console.error("Socket error:", err);
+    });
+  });
+
+  httpServer.listen(port, () => {
     console.log(`Server running on port ${port}`);
 })

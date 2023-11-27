@@ -6,3 +6,7 @@
     width: 80%;
     height: 80vh;
 }
+
+.leaflet-control-attribution.leaflet-control {
+    display: none;
+}

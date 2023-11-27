@@ -33,7 +33,7 @@ const Map = () => {
     return (
         <>
         < Navbar /> 
-      <MapContainer center={userHouseLocation} zoom={13}>
+      <MapContainer center={userHouseLocation} zoom={16}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <RestaurantMarker position={restaurantLocation} />
         <UserHouseMarker position={userHouseLocation} />

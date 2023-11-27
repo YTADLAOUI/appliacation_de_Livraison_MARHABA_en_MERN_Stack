@@ -11,7 +11,7 @@ const UserHouseMarker = ({ position }) => {
 
   return (
     <Marker position={position} icon={homeMark}>
-      <Popup>User's House</Popup>
+      <Popup>Your Location</Popup>
     </Marker>
   );
 };
