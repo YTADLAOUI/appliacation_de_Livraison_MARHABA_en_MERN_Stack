@@ -8,6 +8,7 @@ import Map from './map';
 import axios from 'axios';
 
 const CartShopping = () => {
+  const navigate=useNavigate();
   const products = useSelector((state) => state.valueCart.value);
   const [menu,setMenu]=useState([])
   console.log(products,"hi")
@@ -39,7 +40,8 @@ const CartShopping = () => {
             const checkOut=()=>{
                 const response= axios.post("http://localhost:1111/api/order/checkOut",data).then( response=>
                 console.log(response.data)
-              ).catch(console.log)
+                ).catch(console.log)
+                navigate("/no")
             }
             
             console.log(position,data,"hjklkjhghj")
