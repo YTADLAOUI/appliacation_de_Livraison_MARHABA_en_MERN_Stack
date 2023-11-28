@@ -57,7 +57,7 @@ function Navbar() {
             </ul>
 
             
-            {/* {!isAuthenticated() &&  (
+            {!isAuthenticated() &&  (
               <>
                 <form className="d-flex me-3">
                     <button className="btn btn-outline-danger" type="submit">Sign In</button>
@@ -68,7 +68,7 @@ function Navbar() {
               </>  
             )} 
 
-            {isAuthenticated() && ( */}
+            {isAuthenticated() && (
               <>
                 <div className="d-flex">
             <span className="btn btn-outline-danger me-1" onClick={cart} ><i className='fas fa-shopping-cart'><span>{prd?.list.length}</span></i></span>
@@ -77,7 +77,7 @@ function Navbar() {
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>
               </>
-            {/* )} */}
+             )} 
            
           </div>
         </div>

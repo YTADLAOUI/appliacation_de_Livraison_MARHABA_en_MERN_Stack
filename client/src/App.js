@@ -17,6 +17,8 @@ import './components/sign.css'
 import HomeScreen from "./components/add_a_Panies/HomeScreen";
 import Product from "./components/add_a_Panies/Product";
 import CartShopping from "./components/add_a_Panies/cartShopping"
+import CheckOut from "./components/add_a_Panies/checkOut";
+import ManagerNontification from "./components/orders/managerNontification";
 
 function App() {
 	// const user = localStorage.getItem("token");
@@ -42,7 +44,11 @@ function App() {
 
 
 				<Route path="/" element={<Navigate replace to="/login" />} />
+			<Route path="/checkOut" element={<CheckOut/>} />
+			<Route path="/no" element={<ManagerNontification/>} />
 			</Routes>
+
+
 		</>	
 	);
 }

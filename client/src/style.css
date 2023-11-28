@@ -3,7 +3,14 @@
   padding: 0;
   margin: 0;
 }
+@import url("leaflet/dist/leaflet.css");
 
+.leaflet-container {
+    margin-top: 3em;
+    margin-left: 13em;
+    width: 50%;
+    height: 50vh;
+}
 body {
   font-family: cursive, "Almarai", sans-serif !important;
 }
