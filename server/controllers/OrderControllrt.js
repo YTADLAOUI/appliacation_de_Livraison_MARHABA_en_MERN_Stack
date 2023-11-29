@@ -1,6 +1,6 @@
 const Dishe = require("../models/Dishe");
 const Order = require("../models/Order");
-const Restaurant = require("../models/Restaurant");
+// const Restaurant = require("../models/Restaurant");
 const UserModel = require("../models/User");
 
 class OrderController {
@@ -21,29 +21,14 @@ class OrderController {
       });
       order.save();
        
-       const restaurant = await Restaurant.findOne({ _id: restaurant_id });
-        console.log(restaurant,'herrrr')
-        const manager = '6563151e82298b67df6af7a3';
+    
 
        const user = await UserModel.findOne({ _id: user_id });
-       console.log(user,'user')
-       const menuComplet = await Promise.all(
-        order.menus.map(async (menu) => {
-          const product = await Dishe.findOne({ _id: menu._id });
-          return {
-            _id: menu._id,
-            name: product ? product.name : 'Unknown Product',
-            quantity: menu.quantity,
-          };
-        })
-      );
-      console.log(menuComplet,'good')
+    
        req.app.io.emit("order-was-placed", {
          message: `New order placed by ${user.name}`,
          order: order,
          menuComplet:menuComplet,
-         manger:manager,
-         restaurant:restaurant,
          user:user
         }
        );
@@ -52,6 +37,31 @@ class OrderController {
       console.log(err);
     }
   };
+  static getOrder=async(req,res)=>{
+    try {
+
+      const orders = await Order.find({})
+        .populate('restaurant_id')
+        .populate('user_id')
+        .populate({
+          path: 'menus._id',
+          model: 'Dish',
+        });
+       
+
+         const manager = '6563151e82298b67df6af7a3';
+      
+       req.app.io.emit("order-was-placed", {
+         message: `New order placed by`,
+         orders: orders,
+         manger:manager,
+        }
+       );
+      return res.status(200).json(orders)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   static livreurOrder= async(req,res)=>{
     //  const {}=req.body
     req.app.io.emit("order-to-livreur", {
