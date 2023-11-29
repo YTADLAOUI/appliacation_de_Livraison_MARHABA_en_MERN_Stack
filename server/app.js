@@ -25,7 +25,7 @@ swagger(app);
 
 //New imports
 const httpServer = http.Server(app);
-//Pass the Express app into the HTTP module.
+
 const socketIO = new Server(httpServer,{cors: {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"]
