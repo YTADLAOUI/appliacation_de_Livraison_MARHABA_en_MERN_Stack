@@ -63,7 +63,13 @@ class OrderController {
     }
   }
   static livreurOrder= async(req,res)=>{
-    //  const {}=req.body
+      const {orderId}=req.body
+
+      const result = await Order.updateOne(
+        { _id: orderId },
+        { $set: { status: 'accepted' } }
+      );
+
     req.app.io.emit("order-to-livreur", {
       message: `New order placed by`,
     });
