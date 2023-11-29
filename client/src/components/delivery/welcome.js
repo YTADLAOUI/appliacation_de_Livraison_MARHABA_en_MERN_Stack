@@ -44,18 +44,14 @@ const DeliveryWelcomePage = () => {
           
           <div >
             <section className="navbar navbar-expand-lg navbar-light bg-warning rounded p-2">
-              <a className="navbar-brand" href="">test</a>
-              <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
-              </button>
-
-              <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
+              <p className="navbar-brand mb-0 ms-1" >test</p>
+              <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
-                    <a className="nav-link" href="#">test</a>
+                    <p className="nav-link mb-0">test</p>
                   </li>
                 </ul>
-                  <button className="btn btn-outline-success" type="submit">Confirme</button>
+              <div className="me-2">
+                  <button className="btn btn-success" type="submit">Confirme</button>
               </div>
             </section>
           </div>
