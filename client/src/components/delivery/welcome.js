@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../header/navbar";
+import axios from 'axios';
 
 const DeliveryWelcomePage = () => {
     const dashboardStyle = {
       overflow: 'hidden'
     };
+
+    const [orders, setOrder] = useState({});
+
+    useEffect(()=>{
+    axios.post(``)
+    .then(res => {
+        // console.log(res);
+        const order = res.body;
+        // console.log(order);
+        setOrder(order)
+        })
+    },[])
+
   return (
     <>
     <Navbar />
