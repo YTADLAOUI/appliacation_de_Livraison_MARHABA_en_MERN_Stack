@@ -39,7 +39,16 @@ const ManagerNontification = () => {
    const [restaurant,setRestaurant]=useState([]);
    const [open, setOpen] = useState(false);
    const [currentOrder, setCurrentOrder] = useState(null);
-  
+  //  const [dataSent, setDataSent] = useState(() => {
+  //   // Load the value from localStorage or default to false
+  //   const storedValue = localStorage.getItem('dataSent');
+  //   return storedValue ? JSON.parse(storedValue) : false;
+  // });
+  const [dataSentMap, setDataSentMap] = useState(() => {
+    // Load the value from localStorage or default to an empty map
+    const storedValue = localStorage.getItem('dataSentMap');
+    return storedValue ? new Map(JSON.parse(storedValue)) : new Map();
+  });
   
   
    const handleOpen = (order) => {
@@ -51,17 +60,48 @@ const ManagerNontification = () => {
     setOpen(false);
     setCurrentOrder(null);
   };
-  const handleChange = (orderId, event) => {
-    setChecked((prevChecked) => ({
-      ...prevChecked,
-      [orderId]: event.target.checked,
-    }));
+  const handleChange = async (orderId, event) => {
+    if (!dataSentMap.get(orderId)) {
+      setChecked((prevChecked) => ({
+        ...prevChecked,
+        [orderId]: event.target.checked,
+      }));
+      const order = orders.find((o) => o._id === orderId);
+      const sendData = {
+        orderId: order._id,
+        user: order.user_id,
+        menus:order.menus,
+        position:order.trk,
+        prix:order.total_price,
+        restaurant:order.restaurant_id
+      };
+      try {
+        const response = await axios.post("http://localhost:1111/api/order/livreur", sendData);
+        console.log(response.data);
+
+        setDataSentMap((prevMap) => {
+          const newMap = new Map(prevMap);
+          newMap.set(orderId, true);
+          return newMap;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
-    useEffect(async()=>{
+  useEffect(() => {
+    localStorage.setItem('dataSentMap', JSON.stringify(Array.from(dataSentMap.entries())));
+  }, [dataSentMap]);
+    useEffect(()=>{
       try{
+        const fetchData = async () => {
         const respons= await axios.post("http://localhost:1111/api/order/Order")
         console.log(respons.data,'data')
         setOrder(...orders,respons.data)
+        setDatas(...datas,respons.data)
+      
+      }
+        fetchData()
       }catch(error){
         console.log(error)
       }
@@ -101,7 +141,8 @@ const ManagerNontification = () => {
               <Switch
                       checked={checked[order._id] || false}
                       onChange={(event) => handleChange(order._id, event)}
-              />
+                      disabled={dataSentMap.get(order._id)}
+                    />
                 </TableCell> 
             </TableRow>
           ))}
