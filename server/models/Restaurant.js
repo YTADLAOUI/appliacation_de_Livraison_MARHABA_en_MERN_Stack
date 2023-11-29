@@ -26,8 +26,14 @@ const restaurantSchema = new mongoose.Schema({
         },
     },
     categories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }],
+    photo: {
+        type: String, 
+        required: true,
+    },
 });
 
 restaurantSchema.index({ location: '2dsphere' });
 
-module.exports = mongoose.model('Restaurant', restaurantSchema);
+const restaurantModels= mongoose.model('Restaurant', restaurantSchema);
+
+module.exports = restaurantModels

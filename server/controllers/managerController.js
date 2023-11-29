@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
 const Dish = require('../models/Dishe');
-
+const upload = require('../config/multerConfig')
+const fs = require('fs');
 
 function getManager(req, res) {
     let token = req.cookies.authToken;
@@ -20,29 +21,35 @@ function getManager(req, res) {
 }
 
 async function createRestaurant(req, res) {
-    try {
-        const { name, description, coordinates, categoryId } = req.body;
-        const { lat, long } = coordinates;
+  try {
+    const { name, description, lat, long, categoryId,photo  } = req.body;
 
-        const newRestaurant = new Restaurant({
-            name,
-            description,
-            location: {
-                coordinates: {
-                    lat,
-                    long,
-                },
-            },
-            categories: [categoryId],
-        });
+    
+    // const imageBuffer = Buffer.from(photo, 'base64');
+    // const filename = `restaurant_${Date.now()}.png`;
+    // fs.writeFileSync(`images/uploads/${filename}`, imageBuffer, 'base64');
 
-        const savedRestaurant = await newRestaurant.save();
+    const newRestaurant = new Restaurant({
+      name,
+      description,
+      location: {
+        coordinates: {
+          lat,
+          long,
+        },
+      },
+      categories: [categoryId],
+      photo, 
+    });
 
-        res.status(201).json(savedRestaurant);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+    const savedRestaurant = await newRestaurant.save();
+
+    res.status(201).json(savedRestaurant);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }
+
 async function createCategory(req, res) {
     try {
         const { name } = req.body;
@@ -64,7 +71,7 @@ async function createDish(req, res) {
             name,
             description,
             price,
-            restaurant: restaurantId, // Link the dish to a specific restaurant
+            restaurant: restaurantId, 
         });
 
         const savedDish = await newDish.save();
@@ -75,4 +82,4 @@ async function createDish(req, res) {
     }
 }
 
-module.exports = { getManager, createRestaurant, createCategory, createDish };
+module.exports = { getManager, createRestaurant, createCategory, createDish ,upload};
