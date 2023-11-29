@@ -19,7 +19,23 @@ function Navbar() {
     })
     .catch()
   }
+  useEffect(() => {
+    const socket = io('http://localhost:1111'); 
 
+    
+    socket.on('order-was-placed', (data) => {
+      console.log('New order:', data.message);
+      console.log('Order details:', data.order);
+      console.log('Menu details:', data.menuComplet);
+      console.log('User details:', data.user);
+
+    
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
   const cart=()=>{
     navigate("/cartShopping")
   }
@@ -70,8 +86,13 @@ function Navbar() {
 
             {isAuthenticated() && (
               <>
+
                 <div className="d-flex">
-            <span className="btn btn-outline-danger me-1" onClick={cart} ><i className='fas fa-shopping-cart'><span>{prd?.list.length}</span></i></span>
+                  <span className="btn btn-outline-danger me-1" style={{ border: 'none' }} onClick={cart}>
+                    <i className='fas fa-shopping-cart'>
+                      <span style={{ marginLeft: '5px',fontSize:'10px'}}>{prd?.list.length}</span>
+                    </i>
+                  </span>
                 </div>
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>

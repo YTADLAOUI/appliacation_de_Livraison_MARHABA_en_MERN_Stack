@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import Navbar from '../header/navbar';
 
 const style = {
   position: 'absolute',
@@ -111,9 +112,10 @@ const ManagerNontification = () => {
  
   return (
     <>
+    <Navbar></Navbar>
     {
       orders ? (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} className='container d-flex justify-content-center align-items-center mt-5'>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -132,7 +134,7 @@ const ManagerNontification = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell >{order.user_id.name}</TableCell>
-              <TableCell align=""><Button onClick={() => handleOpen(order)}>Open modal</Button></TableCell>
+              <TableCell align=""><Button onClick={() => handleOpen(order)}>product</Button></TableCell>
               <TableCell component="th" scope="row">
                 {order.status}
               </TableCell>
