@@ -1,9 +1,16 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 function Navbar() {
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   const navigate = useNavigate();
   const prd = useSelector((state) => state.valueCart.value);
@@ -57,6 +64,73 @@ function Navbar() {
               <li className="nav-item">
                 <a className="nav-link" onClick={()=>navigate("/trackOrder")}>Track Your Order</a>
               </li>
+
+              {/* notification start*/}
+              <li className={`nav-item me-3 me-lg-0 dropdown ${isDropdownOpen ? 'show' : ''}`}>
+                <a
+                  onClick={toggleDropdown}
+                  className="nav-link dropdown-toggle hidden-arrow show"
+                  role="button"
+                  alt="Notifications"
+                  id="navbarNotification"
+                  data-mdb-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded={isDropdownOpen}
+                >
+                  <i className="fas fa-bell" alt="Notifications"></i>
+                  <span
+                    id="navbarNotificationCounter"
+                    className="badge rounded-pill badge-notification bg-danger"
+                    alt="Notifications"
+                    style={{ color: 'rgb(255, 255, 255)', display: 'none' }}
+                  >
+                    1
+                  </span>
+                </a>
+                <ul
+                  className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`}
+                  id="navbarNotificationContent"
+                  aria-labelledby="navbarDropdownMenuLink"
+                  style={{
+                    width: '250px',
+                    position: 'absolute',
+                    inset: '0px 0px auto auto',
+                    margin: '0px',
+                    transform: 'translate3d(0px, 44px, 0px)',
+                  }}
+                  data-popper-placement="bottom-end"
+                  data-mdb-popper="null"
+                >
+                  <li>
+                    <a
+                      gtm-id="Notifications"
+                      className="dropdown-item text-wrap border-bottom border-gray rounded"
+                      data-notification-date="08/25/2023 16:55"
+                      rel="nofollow noreferrer"
+                    >
+                      <p className="small text-uppercase mb-2">8/25/2023</p>
+                      <p className="mb-0">
+                        Get free hosting for your frontend project + database with MDB GO.
+                      </p>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      gtm-id="Notifications"
+                      className="dropdown-item text-wrap"
+                      data-notification-date="08/25/2023 16:55"
+                      rel="nofollow noreferrer"
+                    >
+                      <p className="small text-uppercase mb-2">8/25/2023</p>
+                      <p className="mb-0">
+                        Get free hosting for your frontend project + database with MDB GO.
+                      </p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              {/* notification end */}
+
             </ul>
 
             
