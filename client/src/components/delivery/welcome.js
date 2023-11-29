@@ -6,15 +6,27 @@ const DeliveryWelcomePage = () => {
     const dashboardStyle = {
       overflow: 'hidden'
     };
+    const [orders, setOrder] = useState([]);
 
-    const [orders, setOrder] = useState({});
+    const handelClick = async (orderId) => {
+      try {
+        await axios.post("http://localhost:1111/api/order/Inprogress/Order", {orderId})
+
+        // After updating the order status, fetch the updated list of orders
+      const updatedOrders = await axios.get("http://localhost:1111/api/order/Accepted/Order");
+      setOrder(updatedOrders.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
 
     useEffect(()=>{
-    axios.post(``)
+    axios.get(`http://localhost:1111/api/order/Accepted/Order`)
     .then(res => {
         // console.log(res);
-        const order = res.body;
-        // console.log(order);
+        const order = res.data;
+        console.log(order);
         setOrder(order)
         })
     },[])
@@ -57,17 +69,37 @@ const DeliveryWelcomePage = () => {
           </div>
           
           <div >
-            <section className="navbar navbar-expand-lg navbar-light bg-warning rounded p-2">
-              <p className="navbar-brand mb-0 ms-1" >test</p>
+          {orders.map((order) => (
+            <section className="navbar navbar-expand-lg navbar-light bg-warning rounded p-2 mb-2">
+              <div className="mr-auto ms-5">
+              <p className="navbar-brand mb-0">resto</p>
+              <p className="mb-0 me-4 text-center" >{order.restaurant_id.name}</p>
+              </div>
               <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
-                    <p className="nav-link mb-0">test</p>
+                    <p className="nav-link m-0 p-0">Order : {order.menus.map((pr)=>(pr._id.name))}</p>
+                    <p className="nav-link m-0 p-0">Quantity : {order.menus.map((pr)=>(pr.quantity))}</p>
+                    <p className="nav-link m-0 p-0">Total : {order.total_price} dh</p>
                   </li>
                 </ul>
-              <div className="me-2">
-                  <button className="btn btn-success" type="submit">Confirme</button>
+              <ul className="navbar-nav mr-auto">
+                  <li className="nav-item">
+                    <p className="nav-link m-0 p-0">name : {order.user_id.name}</p>
+                    <p className="nav-link m-0 p-0">phone : {order.user_id.phone}</p>
+                    <p className="nav-link m-0 p-0">address : {order.user_id.address}</p>
+                  </li>
+                </ul>
+              <div className="me-5">
+              {order.status === 'inprogress' ? (
+                <button className="btn btn-success text-light" disabled>
+                  In Progress
+                </button>
+                  ) : (
+                  <button className="btn btn-success" onClick={() => handelClick(order._id)}>Confirme</button>
+                  )}
               </div>
             </section>
+            ))}
           </div>
 
         </div>

@@ -76,6 +76,34 @@ class OrderController {
     console.log(req.body)
     return res.status(200).json("livreur")
   }
+
+  static getAcceptedOrder = async(req,res)=>{
+    try {
+      const orders = await Order.find({ 'status': { $in: ['accepted', 'inprogress'] } })
+        .populate('restaurant_id')
+        .populate('user_id')
+        .populate({
+          path: 'menus._id',
+          model: 'Dish',
+        });
+      return res.status(200).json(orders)
+    } catch (error) {
+      console.log(error)
+    }
+}
+
+static changeOrderStatus = async(req,res)=>{
+
+  const orderId = req.body.orderId
+  console.log(orderId);
+  await Order.updateOne(
+    { _id: orderId },
+    { $set: { status: 'inprogress' } }
+  );
+
+  return res.status(200).json("Order inprogress")
+}
+
 }
 
 module.exports = OrderController;
