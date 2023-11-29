@@ -52,7 +52,7 @@ function Navbar() {
                 <a className="nav-link">Events</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Chefs</a>
+                <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
               </li>
               <li className="nav-item">
                 <a className="nav-link" onClick={()=>navigate("/trackOrder")}>Track Your Order</a>

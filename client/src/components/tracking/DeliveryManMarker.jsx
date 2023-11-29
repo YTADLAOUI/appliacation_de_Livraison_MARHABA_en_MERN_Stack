@@ -7,7 +7,7 @@ const DeliveryManMarker = ({ position }) => {
 
     useEffect(() => {
         const socket = io("http://localhost:1111/");
-        console.log(socket);
+        // console.log(socket);
         return () => {
           socket.disconnect();
         };
