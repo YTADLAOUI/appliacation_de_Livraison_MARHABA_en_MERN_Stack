@@ -3,41 +3,43 @@ import Navbar from "../header/navbar";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
-const DeliveryWelcomePage = () => {
-  const loginUser = localStorage.getItem("token");
+const ClientOrders = () => {
+    const loginUser = localStorage.getItem("token");
     let parsedUser;
     if (loginUser) {
     parsedUser = JSON.parse(loginUser);
     }
     const userName = parsedUser.user.name
-
+    const userId = parsedUser.user._id
+    console.log(userId);
     const dashboardStyle = {
-      overflow: 'hidden'
-    };
-    const [orders, setOrder] = useState([]);
-
-    const handelClick = async (orderId) => {
-      try {
-        await axios.post("http://localhost:1111/api/order/Inprogress/Order", {orderId})
-
-        // After updating the order status, fetch the updated list of orders
-      const updatedOrders = await axios.get("http://localhost:1111/api/order/Accepted/Order");
-      setOrder(updatedOrders.data);
-      } catch (error) {
-        console.log(error);
+        overflow: 'hidden'
+      };
+      const [orders, setOrder] = useState([]);
+  
+      const handelClick = async (orderId) => {
+        try {
+          await axios.post("http://localhost:1111/api/order/Done/Order", {orderId})
+  
+          // After updating the order status, fetch the updated list of orders
+        const updatedOrders = await axios.get(`http://localhost:1111/api/order/locations/${userId}`);
+        setOrder(updatedOrders.data);
+        } catch (error) {
+          console.log(error);
+        }
       }
-    }
+  
+  
+      useEffect(()=>{
+      axios.get(`http://localhost:1111/api/order/locations/${userId}`)
+      .then(res => {
+          // console.log(res);
+          const order = res.data;
+          console.log(order);
+          setOrder(order)
+          })
+      },[])
 
-
-    useEffect(()=>{
-    axios.get(`http://localhost:1111/api/order/Accepted/Order`)
-    .then(res => {
-        // console.log(res);
-        const order = res.data;
-        console.log(order);
-        setOrder(order)
-        })
-    },[])
 
   return (
     <>
@@ -59,7 +61,13 @@ const DeliveryWelcomePage = () => {
                 <hr />
                 <li className="mb-4">
                   <Link to="" className="nav-link px-0 align-middle text-light">
-                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">All Orders</span>
+                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Your Orders</span>
+                  </Link>
+                </li>
+                <hr />
+                <li className="mb-4">
+                  <Link to="/trackOrder" className="nav-link px-0 align-middle text-light">
+                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Track Order</span>
                   </Link>
                 </li>
                 <hr />
@@ -73,7 +81,8 @@ const DeliveryWelcomePage = () => {
 
           <div className="row items-center me-0 mb-4">
             <h1 className="col fw-bold fs-2 ms-4 mt-4">Welcome, {userName}!</h1>
-            <p className="fw-bold ms-4">This is your personalized dashboard as a Delivery.</p>
+            <p className="fw-bold ms-4">This is your personalized dashboard as a Client.</p>
+            <p className="fw-bold mb-0 fs-4">Your Orders</p>
           </div>
           
           <div >
@@ -98,7 +107,7 @@ const DeliveryWelcomePage = () => {
                   </li>
                 </ul>
               <div className="me-5">
-              {order.status === 'inprogress' || order.status === 'done' ? (
+              {order.status === 'done' ? (
                 <button className="btn btn-success text-light" disabled>
                   {order.status}
                 </button>
@@ -114,7 +123,7 @@ const DeliveryWelcomePage = () => {
       </div>
     </div>
     </>
-  );
-};
+  )
+}
 
-export default DeliveryWelcomePage;
+export default ClientOrders

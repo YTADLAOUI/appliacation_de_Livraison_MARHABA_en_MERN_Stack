@@ -79,7 +79,7 @@ class OrderController {
 
   static getAcceptedOrder = async(req,res)=>{
     try {
-      const orders = await Order.find({ 'status': { $in: ['accepted', 'inprogress'] } })
+      const orders = await Order.find({ 'status': { $in: ['accepted', 'inprogress', 'done'] } })
         .populate('restaurant_id')
         .populate('user_id')
         .populate({
@@ -107,11 +107,14 @@ static changeOrderStatus = async(req,res)=>{
 static getUserRestoPosition = async (req, res) => {
   const userId = req.params.userId; // Assuming you pass the user ID as a parameter
   // console.log(userId);
-
   try {
     const orders = await Order.find({ 'status': 'inprogress', 'user_id': userId })
       .populate('restaurant_id')
       .populate('user_id')
+      .populate({
+        path: 'menus._id',
+        model: 'Dish',
+      });
     
     return res.status(200).json(orders);
   } catch (error) {
@@ -119,6 +122,18 @@ static getUserRestoPosition = async (req, res) => {
     return res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+static orderStatusToDone = async(req,res)=>{
+
+  const orderId = req.body.orderId
+  console.log(orderId);
+  await Order.updateOne(
+    { _id: orderId },
+    { $set: { status: 'done' } }
+  );
+
+  return res.status(200).json("Order inprogress")
+}
 
 }
 
