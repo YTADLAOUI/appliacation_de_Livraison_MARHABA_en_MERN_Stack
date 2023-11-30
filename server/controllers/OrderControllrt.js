@@ -104,6 +104,22 @@ static changeOrderStatus = async(req,res)=>{
   return res.status(200).json("Order inprogress")
 }
 
+static getUserRestoPosition = async (req, res) => {
+  const userId = req.params.userId; // Assuming you pass the user ID as a parameter
+  // console.log(userId);
+
+  try {
+    const orders = await Order.find({ 'status': 'inprogress', 'user_id': userId })
+      .populate('restaurant_id')
+      .populate('user_id')
+    
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 }
 
 module.exports = OrderController;
