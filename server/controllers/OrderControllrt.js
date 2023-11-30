@@ -135,6 +135,25 @@ static orderStatusToDone = async(req,res)=>{
   return res.status(200).json("Order inprogress")
 }
 
+static getUserOrders = async (req, res) => {
+  const userId = req.params.userId; // Assuming you pass the user ID as a parameter
+  // console.log(userId);
+  try {
+    const orders = await Order.find({ 'status': { $in: ['inprogress', 'done'] }, 'user_id': userId })
+      .populate('restaurant_id')
+      .populate('user_id')
+      .populate({
+        path: 'menus._id',
+        model: 'Dish',
+      });
+    
+    return res.status(200).json(orders);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 }
 
 module.exports = OrderController;

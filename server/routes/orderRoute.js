@@ -8,6 +8,7 @@ router.post('/Order',OrderController.getOrder)
 router.get('/Accepted/Order',OrderController.getAcceptedOrder)
 router.post('/Inprogress/Order',OrderController.changeOrderStatus)
 router.get('/locations/:userId',OrderController.getUserRestoPosition)
+router.get('/userOrders/:userId',OrderController.getUserOrders)
 router.post('/Done/Order',OrderController.orderStatusToDone)
 
 

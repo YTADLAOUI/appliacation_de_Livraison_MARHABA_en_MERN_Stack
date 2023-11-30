@@ -22,7 +22,7 @@ const ClientOrders = () => {
           await axios.post("http://localhost:1111/api/order/Done/Order", {orderId})
   
           // After updating the order status, fetch the updated list of orders
-        const updatedOrders = await axios.get(`http://localhost:1111/api/order/locations/${userId}`);
+        const updatedOrders = await axios.get(`http://localhost:1111/api/order/userOrders/${userId}`);
         setOrder(updatedOrders.data);
         } catch (error) {
           console.log(error);
@@ -31,7 +31,7 @@ const ClientOrders = () => {
   
   
       useEffect(()=>{
-      axios.get(`http://localhost:1111/api/order/locations/${userId}`)
+      axios.get(`http://localhost:1111/api/order/userOrders/${userId}`)
       .then(res => {
           // console.log(res);
           const order = res.data;
