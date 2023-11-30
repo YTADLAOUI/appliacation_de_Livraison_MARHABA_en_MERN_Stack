@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { MapContainer, TileLayer } from "react-leaflet"
+import { MapContainer, TileLayer, Polyline } from "react-leaflet"
 import "leaflet-control-geocoder/dist/Control.Geocoder.css"
 import "leaflet-control-geocoder/dist/Control.Geocoder.js"
 import io from 'socket.io-client';
@@ -18,12 +18,12 @@ if (loginUser) {
   parsedUser = JSON.parse(loginUser);
 }
 const userId = parsedUser.user._id
-console.log(parsedUser.user._id);
 
 const Map = () => {
     const [restaurantLocation, setRestaurantLocation] = useState();
     const [userHouseLocation, setUserHouseLocation] = useState();
     const [deliveryManLocation, setDeliveryManLocation] = useState([51.51, -0.09]);
+    const positions = [restaurantLocation, userHouseLocation];
 
     useEffect(()=>{
     axios.get(`http://localhost:1111/api/order/locations/${userId}`)
@@ -58,17 +58,23 @@ const Map = () => {
     }, []);
 
     if(!userHouseLocation){
-      return <div>Loading...</div>
+      return <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="spinner-border" role="status">
+        <span className="visually-hidden">Loading...</span>
+      </div>
+        <div className="ms-2">Loading...</div>
+    </div>
     }
   
     return (
         <>
-        < Navbar /> 
+      < Navbar /> 
       <MapContainer center={userHouseLocation} zoom={10}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <RestaurantMarker position={restaurantLocation} />
         <UserHouseMarker position={userHouseLocation} />
         <DeliveryManMarker position={deliveryManLocation} />
+        <Polyline positions={positions} color="red" />
       </MapContainer>
       </>
     );
