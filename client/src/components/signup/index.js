@@ -85,19 +85,19 @@ const Signup = () => {
             <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="mb-4">
-                  <input type="text" name="name" value={data.name}  id="name" className="form-control form-control-lg" placeholder="Name" {... register ("name",{required:"Name is required",minLength: {value: 6,message :"Min Length you need 6 caracters "},maxLength: {value: 15,message: "max Length is 15 caracters"}})} onChange={handleChange} />
+                  <input type="text" name="name" value={data.name}  id="name" className="form-control " placeholder="Name" {... register ("name",{required:"Name is required",minLength: {value: 6,message :"Min Length you need 6 caracters "},maxLength: {value: 15,message: "max Length is 15 caracters"}})} onChange={handleChange} />
                   {errors.name && (<small className='text-danger'>{errors.name.message}</small>)}
                 </div>
                 <div className="mb-4">
-                  <input type="text" name="email" value={data.email}  id="email" className="form-control form-control-lg" placeholder="Email" {...register("email",{required: "Email is required",pattern: {value:/^\S+@\S+.\S+$/,message: 'Invalid Email Address'}})} onChange={handleChange} />
+                  <input type="text" name="email" value={data.email}  id="email" className="form-control " placeholder="Email" {...register("email",{required: "Email is required",pattern: {value:/^\S+@\S+.\S+$/,message: 'Invalid Email Address'}})} onChange={handleChange} />
                   {errors.email && (<small className='text-danger'>{errors.email.message}</small>)}
                 </div>
                 <div className="mb-4">
-                  <input type="text" name="address" value={data.address}  id="address" className="form-control form-control-lg" placeholder="Address" {... register ("address",{required:"Address is required",minLength: {value: 6,message :"Min Length you need 6 caracters "},maxLength: {value: 15,message: "max Length is 15 caracters"}})} onChange={handleChange}/>
+                  <input type="text" name="address" value={data.address}  id="address" className="form-control " placeholder="Address" {... register ("address",{required:"Address is required",minLength: {value: 6,message :"Min Length you need 6 caracters "},maxLength: {value: 15,message: "max Length is 15 caracters"}})} onChange={handleChange}/>
                   {errors.address && (<small className='text-danger'>{errors.address.message}</small>)}
                 </div>
                 <div className="mb-4">
-                  <input type="text" name="phone" value={data.phone}  id="phone" className="form-control form-control-lg" placeholder="Phone number" 
+                  <input type="text" name="phone" value={data.phone}  id="phone" className="form-control " placeholder="Phone number" 
                     {...register('phone', {
                         required: 'Phone number is required',
                         pattern: {
@@ -111,7 +111,7 @@ const Signup = () => {
                   {errors.phone && (<small className='text-danger'>{errors.phone.message}</small>)}
                 </div>
                 <div className="mb-4">
-                  <input type="password" name="password" value={data.password}  id="password" className="form-control form-control-lg" placeholder="Password" 
+                  <input type="password" name="password" value={data.password}  id="password" className="form-control " placeholder="Password" 
                     
                     {...register('password', {
                       required: 'Password is required',
@@ -126,7 +126,7 @@ const Signup = () => {
                   {errors.password && (<small className='text-danger'>{errors.password.message}</small>)}
                 </div>
                 <div className="mb-4">
-                  <input type="password" name="password_confirmation" value={data.password_confirmation}  id="confirmpassword" className="form-control form-control-lg" placeholder="Confirm password" 
+                  <input type="password" name="password_confirmation" value={data.password_confirmation}  id="confirmpassword" className="form-control " placeholder="Confirm password" 
                     {...register('password_confirmation', {
                       validate: (value) =>
                         value === password || 'The passwords do not match'

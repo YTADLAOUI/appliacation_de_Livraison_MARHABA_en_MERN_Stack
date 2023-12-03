@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -7,7 +7,7 @@ import { io } from 'socket.io-client';
 function Navbar() {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [nontif,setNontif]=useState(null)
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
   };
@@ -26,18 +26,27 @@ function Navbar() {
     })
     .catch()
   }
+ const roleNotification= JSON.parse(localStorage.getItem('token'));
+  console.log(roleNotification.role)
   useEffect(() => {
     const socket = io('http://localhost:1111'); 
 
     
     socket.on('order-was-placed', (data) => {
+      console.log(data,"bro")
       console.log('New order:', data.message);
       console.log('Order details:', data.order);
-      console.log('Menu details:', data.menuComplet);
       console.log('User details:', data.user);
-
+      const roleNotification= JSON.parse(localStorage.getItem('token'));
+        if(roleNotification.role=="manager") setNontif(data.message);
+       const managerId="12345FDEFA";
+       console.log(managerId)
+      if (data && data.order && data.order.manager === managerId) {
+        console.log(data.message);
+        console.log(data.order);
+      }
     
-    });
+    },[]);
 
     return () => {
       socket.disconnect();
@@ -48,6 +57,7 @@ function Navbar() {
   }
   const isAuthenticated = () => {
     const jwt = localStorage.getItem('token');
+    
     if(jwt) return JSON.parse(jwt);
     return false
   }
@@ -126,11 +136,14 @@ function Navbar() {
                     >
                       <p className="small text-uppercase mb-2">8/25/2023</p>
                       <p className="mb-0">
-                        Get free hosting for your frontend project + database with MDB GO.
+                        {
+                          nontif
+                        }
+
                       </p>
                     </a>
                   </li>
-                  <li>
+                  {/* <li>
                     <a
                       gtm-id="Notifications"
                       className="dropdown-item text-wrap"
@@ -142,7 +155,7 @@ function Navbar() {
                         Get free hosting for your frontend project + database with MDB GO.
                       </p>
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
               </li>
               {/* notification end */}

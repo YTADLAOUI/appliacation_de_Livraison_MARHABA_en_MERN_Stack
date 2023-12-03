@@ -114,17 +114,17 @@ const ManagerNontification = () => {
     <>
     <Navbar></Navbar>
     {
-      orders ? (
+        orders ? (
         <TableContainer component={Paper} className='container d-flex justify-content-center align-items-center mt-5'>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             {/* <TableCell></TableCell> */}
             <TableCell>name</TableCell>
-            <TableCell align="">prodact</TableCell>
-            <TableCell align="">status</TableCell>
-            <TableCell align="">price</TableCell>
-            <TableCell align="">accepte</TableCell>
+            <TableCell >prodact</TableCell>
+            <TableCell >status</TableCell>
+            <TableCell >price</TableCell>
+            <TableCell >accepte</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -134,12 +134,12 @@ const ManagerNontification = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell >{order.user_id.name}</TableCell>
-              <TableCell align=""><Button onClick={() => handleOpen(order)}>product</Button></TableCell>
+              <TableCell ><Button onClick={() => handleOpen(order)}>product</Button></TableCell>
               <TableCell component="th" scope="row">
                 {order.status}
               </TableCell>
-              <TableCell align="">{order.total_price}</TableCell>
-              <TableCell align="">
+              <TableCell >{order.total_price}</TableCell>
+              <TableCell >
               <Switch
                       checked={checked[order._id] || false}
                       onChange={(event) => handleChange(order._id, event)}

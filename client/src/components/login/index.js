@@ -32,7 +32,7 @@ const Login = () => {
 			const { data: res } = await axios.post(url, data);
        console.log(res)
 			localStorage.setItem("token", JSON.stringify(res));
-      console.log(res.role)
+      // console.log(res.role)
       switch (res.role) {
         case "manager":
           navigate("/api/user/manager/me");
