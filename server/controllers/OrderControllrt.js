@@ -21,17 +21,20 @@ class OrderController {
       });
       order.save();
        
-        
 
+            
        const user = await UserModel.findOne({ _id: user_id });
-    
+       try {
+        const manager = '6563151e82298b67df6af7a3';
        req.app.io.emit("order-was-placed", {
          message: `New order placed by ${user.name}`,
          order: order,
-         menuComplet:menuComplet,
-         user:user
+         user:user,
+         manager:manager
         }
-       );
+       );}catch(err){
+        console.log(err)
+       }
       return res.status(200).json("Order en panding");
     } catch (err) {
       console.log(err);
@@ -49,14 +52,14 @@ class OrderController {
         });
        
 
-         const manager = '6563151e82298b67df6af7a3';
+         
       
-       req.app.io.emit("order-was-placed", {
-         message: `New order placed by`,
-         orders: orders,
-         manger:manager,
-        }
-       );
+      //  req.app.io.emit("order-was-placed", {
+      //    message: `New order placed by`,
+      //    orders: orders,
+      //    manger:manager,
+      //   }
+      //  );
       return res.status(200).json(orders)
     } catch (error) {
       console.log(error)
