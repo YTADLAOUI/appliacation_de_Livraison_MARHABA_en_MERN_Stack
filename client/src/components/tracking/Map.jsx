@@ -11,7 +11,7 @@ import "./map.css"
 import axios from 'axios';
 
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:1111');
 const loginUser = localStorage.getItem("token");
 let parsedUser;
 if (loginUser) {
@@ -22,7 +22,7 @@ const userId = parsedUser.user._id
 const Map = () => {
     const [restaurantLocation, setRestaurantLocation] = useState();
     const [userHouseLocation, setUserHouseLocation] = useState();
-    const [deliveryManLocation, setDeliveryManLocation] = useState([51.51, -0.09]);
+    const [deliveryManLocation, setDeliveryManLocation] = useState();
     const positions = [restaurantLocation, userHouseLocation];
     // const [deliveryToRestaurant, setDeliveryToRestaurant] = useState(true);
 
@@ -45,19 +45,19 @@ const Map = () => {
 
     
     useEffect(() => {
-      socket.on('locationUpdate', (data) => {
-        const [deliveryManId, orderLocation] = data;
-        // Assuming the delivery man ID is known and corresponds to the current user's delivery
-        if (deliveryManId === 'currentDeliveryManId') {
-          setDeliveryManLocation(orderLocation);
+      socket.on('locationUpdated', (data) => {
+        console.log("recieve data",data);
+        const { userId: orderUserId, latitude, longitude } = data;
+        // Assuming the orderUserId corresponds to the current user's order
+        if (orderUserId === userId) {
+          setDeliveryManLocation([latitude, longitude]);
         }
       });
-  
+    
       return () => {
         socket.disconnect();
       };
-    }, []);
-
+    }, [userId]);
 
     // useEffect(() => {
     //   if (userHouseLocation && restaurantLocation) {
@@ -104,7 +104,7 @@ const Map = () => {
     
     if(!userHouseLocation){
       return <div className="d-flex justify-content-center align-items-center vh-100">
-      <div className="spinner-border" role="status">
+      <div className="spinner-border text-warning" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>
         <div className="ms-2">Loading...</div>
@@ -114,13 +114,14 @@ const Map = () => {
     return (
         <>
       < Navbar /> 
+      {deliveryManLocation ? (
       <MapContainer center={userHouseLocation} zoom={10}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <RestaurantMarker position={restaurantLocation} />
         <UserHouseMarker position={userHouseLocation} />
         <DeliveryManMarker position={deliveryManLocation} />
         <Polyline positions={positions} color="red" />
-      </MapContainer>
+      </MapContainer>):(<p>You Have No Order To Track For This Moment</p>)}
       </>
     );
   };

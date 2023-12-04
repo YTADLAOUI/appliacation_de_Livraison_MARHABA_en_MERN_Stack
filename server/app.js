@@ -14,6 +14,7 @@ const restaurantRoutes = require("./routes/restaurantRoutes");
 const OrderController = require("./controllers/OrderControllrt");
 const {Server} = require("socket.io")
 const http = require("http")
+const mongoose = require("mongoose");
 
 connectDb();
 
@@ -33,12 +34,41 @@ const socketIO = new Server(httpServer,{cors: {
 
 app.io = socketIO
 
+const locationSchema = new mongoose.Schema({
+  orderUserId: String,
+  latitude: Number,
+  longitude: Number,
+});
+
+const Location = mongoose.model('Location', locationSchema);
+
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected`);
+
+  socketIO.on('updateLocation', async (data) => {
+    // Store the location in MongoDB
+    console.log(data);
+    
+    const location = new Location({
+      orderUserId: data.orderUserId,
+      latitude: data.latitude,
+      longitude: data.longitude,
+    });
+    await location.save();
+
+    // Broadcast the location to other connected clients
+    socketIO.broadcast.emit('locationUpdated', {
+      orderUserId: data.orderUserId,
+      latitude: data.latitude,
+      longitude: data.longitude,
+    });
+  });
+
   socket.on("disconnect", () => {
     console.log("A user disconnected");
   });
 });
+
 
 app.use(express.json());
 app.use(cookieParser());

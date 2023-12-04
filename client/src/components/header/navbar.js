@@ -38,26 +38,14 @@ function Navbar() {
   console.log(prd.list.length,"nav")
   return (
     <header>
-      <nav className="navbar navbar-expand-lg ">
-        <div className="container ">
-          <a className="navbar-brand">Marhaba</a>
+      <nav className="navbar navbar-expand-lg">
+        <div className="container">
+          <a className="navbar-brand me-5">Marhaba</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {/* <li className="nav-item">
-                <i className="nav-link active" aria-current="page" onClick={()=>navigate("/home")}>Home</i>
-              </li> */}
-              {/* <li className="nav-item">
-                <a className="nav-link">About</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link">Specials</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link">Events</a>
-              </li> */}
+          <div className="collapse navbar-collapse" style={{ display: 'flex', justifyContent: 'flex-end' }} id="navbarSupportedContent">
+            <ul className="navbar-nav mb-2 mb-lg-0">
               <li className="nav-item ">
                 <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
               </li>
