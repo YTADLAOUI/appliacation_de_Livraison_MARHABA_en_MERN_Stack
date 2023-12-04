@@ -21,13 +21,11 @@ function getManager(req, res) {
 }
 
 async function createRestaurant(req, res) {
+  console.log('jjdjkjkf')
   try {
+    console.log(req.body)
     const { name, description, lat, long, categoryId,photo  } = req.body;
 
-    
-    // const imageBuffer = Buffer.from(photo, 'base64');
-    // const filename = `restaurant_${Date.now()}.png`;
-    // fs.writeFileSync(`images/uploads/${filename}`, imageBuffer, 'base64');
 
     const newRestaurant = new Restaurant({
       name,
@@ -45,8 +43,13 @@ async function createRestaurant(req, res) {
     const savedRestaurant = await newRestaurant.save();
 
     res.status(201).json(savedRestaurant);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
+  }catch (error) {
+    console.error('Error adding restaurant:', error); // Pour enregistrer l'erreur côté serveur
+
+    res.status(500).json({ 
+      error: 'Failed to add restaurant', 
+      message: error.message // Envoyer le message d'erreur au client pour une meilleure compréhension
+    });
   }
 }
 
@@ -65,13 +68,14 @@ async function createCategory(req, res) {
 
 async function createDish(req, res) {
     try {
-        const { name, description, price, restaurantId } = req.body;
+        const { name, description, price, restaurantId ,photo} = req.body;
 
         const newDish = new Dish({
             name,
             description,
             price,
             restaurant: restaurantId, 
+            photo,
         });
 
         const savedDish = await newDish.save();
@@ -82,4 +86,124 @@ async function createDish(req, res) {
     }
 }
 
-module.exports = { getManager, createRestaurant, createCategory, createDish ,upload};
+
+async function getDishesForRestaurant(req, res) {
+  const { restaurantId } = req.params;
+console.log(restaurantId);
+  try {
+    const dishes = await Dish.find({ restaurant: restaurantId });
+    res.status(200).json(dishes);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+
+async function getAllRestaurants(req, res) {
+  try {
+    const restaurants = await Restaurant.find(); // Fetch all restaurants from the database
+    res.status(200).json(restaurants);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function updateRestaurant(req, res) {
+  try {
+    const { restaurantId } = req.params;
+    const { name, description, lat, long, categoryId, photo } = req.body;
+
+    const updatedRestaurant = await Restaurant.findByIdAndUpdate(
+      restaurantId,
+      {
+        $set: {
+          name,
+          description,
+          location: {
+            coordinates: {
+              lat,
+              long,
+            },
+          },
+          categories: [categoryId],
+          photo,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedRestaurant) {
+      return res.status(404).json({ error: "Restaurant not found" });
+    }
+
+    res.status(200).json(updatedRestaurant);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function deleteRestaurant(req, res) {
+  try {
+    const { restaurantId } = req.params;
+
+    const deletedRestaurant = await Restaurant.findByIdAndDelete(restaurantId);
+
+    if (!deletedRestaurant) {
+      return res.status(404).json({ error: "Restaurant not found" });
+    }
+
+    res.status(200).json({ message: "Restaurant deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function updateDish(req, res) {
+  try {
+    const { dishId } = req.params;
+    const { name, description, price, restaurantId, photo } = req.body;
+
+    const updatedDish = await Dish.findByIdAndUpdate(
+      dishId,
+      {
+        $set: {
+          name,
+          description,
+          price,
+          restaurant: restaurantId,
+          photo,
+        },
+      },
+      { new: true }
+    );
+
+    if (!updatedDish) {
+      return res.status(404).json({ error: "Dish not found" });
+    }
+
+    res.status(200).json(updatedDish);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+async function deleteDish(req, res) {
+  try {
+    const { dishId } = req.params;
+
+    const deletedDish = await Dish.findByIdAndDelete(dishId);
+
+    if (!deletedDish) {
+      return res.status(404).json({ error: "Dish not found" });
+    }
+
+    res.status(200).json({ message: "Dish deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
+
+
+module.exports = { getManager, createRestaurant, createCategory, createDish ,upload,getDishesForRestaurant,getAllRestaurants,  updateRestaurant,deleteRestaurant,updateDish,deleteDish,};
