@@ -15,19 +15,20 @@ import AddRestaurantForm from "./components/manager/add_restaut";
 import EmailVerify from "./components/verifyemail/index";
 import ForgotPassword from "./components/forgotPassword";
 import PasswordReset from "./components/PasswordReset";
-import Navbar from "./components/header/navbar";
+// import Navbar from "./components/header/navbar";
 import 'bootstrap/dist/css/bootstrap.css'
 import '../src/style.css'
 import './components/sign.css'
 import HomeScreen from "./components/add_a_Panies/HomeScreen";
+import CheckOut from "./components/add_a_Panies/checkOut";
 import Product from "./components/add_a_Panies/Product";
 import CartShopping from "./components/add_a_Panies/cartShopping"
 import  Content from "./components/manager/Content";
 import Dashboard from "./components/manager/Dashboard";
-import { Table } from "react-bootstrap";
 import AddDishForm from "./components/manager/AddDishForm";
 import RestaurantDishes from "./components/manager/RestaurantDishes";
-
+import ManagerNontification from "./components/orders/managerNontification";
+import HomeRestaut from "./components/restaut/homeRestaut"
 function App() {
 	// const user = localStorage.getItem("token");
 
@@ -45,18 +46,23 @@ function App() {
 				<Route path="/send-reset-password-email" element={<ForgotPassword />} />
 				<Route path="/reset-password" element={<PasswordReset />} />
 				<Route path="/home" element={<HomeScreen/>} />
-				<Route path="/prod" element={<Product/>} />
+				<Route path="/restaurants/:id/dishesHome" element={<Product/>} />
 				<Route path="//cartShopping" element={<CartShopping/>} />
 				<Route path="/add_restaut" element={<AddRestaurantForm/>} />
 				<Route path="/Dashboard" element={<Dashboard/>} />
 				<Route path="/table" element={<Content/>} />
 				<Route path="/add_dishe" element={<AddDishForm/>} />
 				<Route path="/restaurants/:id/dishes" element={<RestaurantDishes/>} />
+				<Route path="/restaurants" element={<HomeRestaut/>} />
                 
 
 
 				<Route path="/" element={<Navigate replace to="/login" />} />
+			<Route path="/checkOut" element={<CheckOut/>} />
+			<Route path="/no" element={<ManagerNontification/>} />
 			</Routes>
+
+
 		</>	
 	);
 }

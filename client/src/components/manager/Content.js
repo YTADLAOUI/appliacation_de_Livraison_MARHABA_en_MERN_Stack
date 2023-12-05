@@ -9,6 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useHistory ,useNavigate} from 'react-router-dom';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 const Content = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -37,10 +39,22 @@ const Content = () => {
 console.log(dishes)
   const handleRestaurantClick = (restaurantId) => {
 
-    // const response= axios.post("",restaurantId) 
+  
     navigate(`/restaurants/${restaurantId}/dishes`, { state: { selectedRestaurant: restaurantId } });
   };
   
+  const handleDelete = async (restaurantId) => {
+    try {
+      await axios.delete(`http://localhost:1111/api/restaut/restaurants/${restaurantId}`);
+      // If the deletion is successful, update the state or refetch the restaurants list
+      // For example, you can refetch the restaurants list after deletion
+      const response = await fetch('http://localhost:1111/api/restaut/restaurants');
+      const result = await response.json();
+      setRestaurants(result);
+    } catch (error) {
+      console.error('Error deleting restaurant:', error);
+    }
+  };
 
   return (
     <>
@@ -50,20 +64,28 @@ console.log(dishes)
             <TableRow>
               <TableCell>Restaurant Name</TableCell>
               <TableCell>Description</TableCell>
-              {/* Add more headers if needed */}
+
             </TableRow>
           </TableHead>
           <TableBody>
             {restaurants.map((restaurant) => (
-              <TableRow key={restaurant._id} onClick={() => handleRestaurantClick(restaurant._id)}>
-                <TableCell component="th" scope="row">
+              <TableRow >
+                <TableCell component="th" scope="row" key={restaurant._id} onClick={() => handleRestaurantClick(restaurant._id)}>
                   {restaurant.name}
                 </TableCell>
                 <TableCell component="th" scope="row">
                   {restaurant.description}
                 </TableCell>
-                {/* Add more cells to display other restaurant details */}
+                <IconButton
+                    aria-label="delete"
+                    size="large"
+                    onClick={() => handleDelete(restaurant._id)}
+                  >
+                <DeleteIcon fontSize="inherit" />
+                </IconButton>
+
               </TableRow>
+              
             ))}
           </TableBody>
         </Table>

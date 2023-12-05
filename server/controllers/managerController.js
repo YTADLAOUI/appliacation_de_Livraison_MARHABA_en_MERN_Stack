@@ -113,7 +113,6 @@ async function updateRestaurant(req, res) {
   try {
     const { restaurantId } = req.params;
     const { name, description, lat, long, categoryId, photo } = req.body;
-
     const updatedRestaurant = await Restaurant.findByIdAndUpdate(
       restaurantId,
       {
@@ -121,10 +120,8 @@ async function updateRestaurant(req, res) {
           name,
           description,
           location: {
-            coordinates: {
-              lat,
-              long,
-            },
+            type: 'Point', // Specify the GeoJSON type
+            coordinates: [parseFloat(long), parseFloat(lat)], // Ensure proper order and data types
           },
           categories: [categoryId],
           photo,
@@ -132,6 +129,7 @@ async function updateRestaurant(req, res) {
       },
       { new: true }
     );
+    
 
     if (!updatedRestaurant) {
       return res.status(404).json({ error: "Restaurant not found" });
@@ -206,4 +204,5 @@ async function deleteDish(req, res) {
 
 
 
-module.exports = { getManager, createRestaurant, createCategory, createDish ,upload,getDishesForRestaurant,getAllRestaurants,  updateRestaurant,deleteRestaurant,updateDish,deleteDish,};
+module.exports = { getManager, createRestaurant, createCategory, createDish ,upload,getDishesForRestaurant,getAllRestaurants,  updateRestaurant,deleteRestaurant,updateDish,
+deleteDish,};
