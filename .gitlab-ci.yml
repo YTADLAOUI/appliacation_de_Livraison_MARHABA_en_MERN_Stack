@@ -20,11 +20,32 @@ unit-test-job:   # This job runs in the test stage.
         - "server/**/*"
 
 
-build-job:       # This job runs in the build stage, which runs first.
+build-backend-job:       # This job runs in the build stage, which runs first.
   stage: build
+  image: docker:latest
+  services:
+        - docker:dind
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+        - cd server
+        - docker build -t $CI_REGISTRY_IMAGE/backend:1.1 .
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker push $CI_REGISTRY_IMAGE/backend:1.1
+  only:
+    changes:
+        - "server/**/*"
+
+build-frontend-job:       # This job runs in the build stage, which runs first.
+  stage: build
+  services:
+        - docker:dind
+  script:
+        - cd client
+        - docker build -t $CI_REGISTRY_IMAGE/frontend:1.2 .
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker push $CI_REGISTRY_IMAGE/frontend:1.2
+  only:
+    changes:
+        - "client/**/*"
     
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
