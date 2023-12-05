@@ -50,16 +50,6 @@ class OrderController {
           path: 'menus._id',
           model: 'Dish',
         });
-       
-
-         
-      
-      //  req.app.io.emit("order-was-placed", {
-      //    message: `New order placed by`,
-      //    orders: orders,
-      //    manger:manager,
-      //   }
-      //  );
       return res.status(200).json(orders)
     } catch (error) {
       console.log(error)
