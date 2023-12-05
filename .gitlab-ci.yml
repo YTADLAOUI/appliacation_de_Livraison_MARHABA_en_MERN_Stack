@@ -36,6 +36,7 @@ build-backend-job:       # This job runs in the build stage, which runs first.
 
 build-frontend-job:       # This job runs in the build stage, which runs first.
   stage: build
+  image: docker:latest
   services:
         - docker:dind
   script:
