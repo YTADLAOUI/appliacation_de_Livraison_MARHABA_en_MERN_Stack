@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
+
 const Dish = require('../models/Dishe');
 const upload = require('../config/multerConfig')
 const fs = require('fs');
@@ -49,7 +50,6 @@ async function createRestaurant(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
-
 async function createCategory(req, res) {
     try {
         const { name } = req.body;
@@ -82,4 +82,4 @@ async function createDish(req, res) {
     }
 }
 
-module.exports = { getManager, createRestaurant, createCategory, createDish ,upload};
+module.exports = { getManager, createRestaurant, createCategory, createDish };
