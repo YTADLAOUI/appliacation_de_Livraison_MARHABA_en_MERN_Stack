@@ -10,8 +10,7 @@
 
  1. First clone the repository, following this command:
 
-        git clone https://github.com/toufik1998/Marhaba_Mern_App.git
-
+https://github.com/YTADLAOUI/appliacation_de_Livraison_MARHABA_en_MERN_Stack.git
 2. Install dependencies:
 
         npm install
@@ -43,7 +42,7 @@
 
  1. First clone the repository, following this command:
 
-        git clone https://github.com/toufik1998/Marhaba_Mern_App.git
+        https://github.com/YTADLAOUI/appliacation_de_Livraison_MARHABA_en_MERN_Stack.git
 
 2. Install dependencies:
 
