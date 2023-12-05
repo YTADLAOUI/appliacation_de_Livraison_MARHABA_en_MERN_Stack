@@ -121,7 +121,9 @@ const Map = () => {
         <UserHouseMarker position={userHouseLocation} />
         <DeliveryManMarker position={deliveryManLocation} />
         <Polyline positions={positions} color="red" />
-      </MapContainer>):(<p>You Have No Order To Track For This Moment</p>)}
+      </MapContainer>):(<div className="d-flex justify-content-center align-items-center" style={{ height: '75vh' }}>
+      <p className="text-center fs-4">You Have No Order To Track For This Moment</p>
+    </div>)}
       </>
     );
   };

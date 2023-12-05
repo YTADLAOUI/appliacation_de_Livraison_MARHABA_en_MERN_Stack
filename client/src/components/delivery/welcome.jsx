@@ -17,6 +17,7 @@ const DeliveryWelcomePage = () => {
       overflow: 'hidden'
     };
     const [orders, setOrder] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const handelClick = async (orderId, orderUserId) => {
       try {
@@ -42,24 +43,44 @@ const DeliveryWelcomePage = () => {
       }
     }
 
-    useEffect(()=>{
-    axios.get(`http://localhost:1111/api/order/Accepted/Order`)
-    .then(res => {
-        // console.log(res);
-        const order = res.data;
-        console.log(order);
-        setOrder(order)
-        })
-    },[])
+    // useEffect(()=>{
+    // axios.get(`http://localhost:1111/api/order/Accepted/Order`)
+    // .then(res => {
+    //     // console.log(res);
+    //     const order = res.data;
+    //     console.log(order);
+    //     setOrder(order)
+    //     })
+    // },[])
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Set loading to true while fetching data.
+          setLoading(true);
+  
+          // Fetch orders.
+          const response = await axios.get(`http://localhost:1111/api/order/Accepted/Order`);
+          setOrder(response.data);
+  
+          // Set loading to false after fetching data.
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching orders:', error);
+          // Set loading to false in case of an error.
+          setLoading(false);
+        }
+      };
+  
+      // Call the fetchData function.
+      fetchData();
+    }, []);
 
     useEffect(() => {
       socket.on('locationUpdated', (data) => {
         console.log('Location updated:', data);
-        // Handle the updated location as needed (e.g., update a map)
       });
-    
       return () => {
-        // Cleanup socket connection on component unmount
         socket.disconnect();
       };
     }, []);
@@ -71,8 +92,8 @@ const DeliveryWelcomePage = () => {
       {/* Add any additional content or functionality specific to clients */}
     </div>
     <div className="container-fluid" id="dashboard" style={dashboardStyle}>
-      <div className="row">
-        <div className="col-2 col-md-3 col-lg-2 px-sm-2 px-0 shadow bg-dark vh-100">
+      <div className="row vh-100">
+        <div className="col-2 col-md-3 col-lg-2 px-sm-2 px-0 shadow bg-dark">
           <div id="toTop">
             <div className="d-flex flex-column align-items-center align-items-sm-start px-3 mt-5 text-white">
               <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
@@ -103,7 +124,20 @@ const DeliveryWelcomePage = () => {
           </div>
           
           <div >
-          {orders.map((order) => (
+          {loading ? (
+                // Render a loading indicator while orders are being fetched.
+                <div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+                <div className="spinner-border text-warning" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                  <div className="ms-2">Loading...</div>
+                </div>
+              ) :
+          orders.length === 0 ? (<div className="d-flex justify-content-center align-items-center" style={{ height: '50vh' }}>
+            <p className="fs-3">You Have No Orders For This Momen!t</p>
+            </div>
+          ) : (
+            orders.map((order) => (
             <section className="navbar navbar-expand-lg navbar-light bg-warning rounded p-2 mb-2">
               <div className="mr-auto ms-5">
               <p className="navbar-brand mb-0">resto</p>
@@ -133,7 +167,8 @@ const DeliveryWelcomePage = () => {
                   )}
               </div>
             </section>
-            ))}
+            ))
+          )}
           </div>
 
         </div>
