@@ -1,8 +1,8 @@
 
 
-stages:          # List of stages for jobs, and their order of execution
+stages:  
+  - test        # List of stages for jobs, and their order of execution
   - build
-  - test
   - deploy
 
 
