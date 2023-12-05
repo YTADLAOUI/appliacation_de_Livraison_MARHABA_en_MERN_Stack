@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import { io } from 'socket.io-client';
 
 function Navbar() {
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [nontif,setNontif]=useState(null)
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
 
   const navigate = useNavigate();
   const prd = useSelector((state) => state.valueCart.value);
@@ -19,12 +26,38 @@ function Navbar() {
     })
     .catch()
   }
+ const roleNotification= JSON.parse(localStorage.getItem('token'));
+  console.log(roleNotification.role)
+  useEffect(() => {
+    const socket = io('http://localhost:1111'); 
 
+    
+    socket.on('order-was-placed', (data) => {
+      console.log(data,"bro")
+      console.log('New order:', data.message);
+      console.log('Order details:', data.order);
+      console.log('User details:', data.user);
+      const roleNotification= JSON.parse(localStorage.getItem('token'));
+        if(roleNotification.role=="manager") setNontif(data.message);
+       const managerId="12345FDEFA";
+       console.log(managerId)
+      if (data && data.order && data.order.manager === managerId) {
+        console.log(data.message);
+        console.log(data.order);
+      }
+    
+    },[]);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
   const cart=()=>{
     navigate("/cartShopping")
   }
   const isAuthenticated = () => {
     const jwt = localStorage.getItem('token');
+    
     if(jwt) return JSON.parse(jwt);
     return false
   }
@@ -38,10 +71,10 @@ function Navbar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <i className="nav-link active" aria-current="page" onClick={()=>navigate("/home")}>Home</i>
-              </li>
-              <li className="nav-item">
+              </li> */}
+              {/* <li className="nav-item">
                 <a className="nav-link">About</a>
               </li>
               <li className="nav-item">
@@ -49,14 +82,87 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <a className="nav-link">Events</a>
+              </li> */}
+              <li className="nav-item ">
+                <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
               </li>
               <li className="nav-item">
-                <a className="nav-link">Chefs</a>
+                <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
               </li>
+
+              {/* notification start*/}
+              <li className={`nav-item me-3 me-lg-0 dropdown ml-auto ${isDropdownOpen ? 'show' : ''}`}>
+                <a
+                  onClick={toggleDropdown}
+                  className="nav-link dropdown-toggle hidden-arrow show"
+                  role="button"
+                  alt="Notifications"
+                  id="navbarNotification"
+                  data-mdb-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded={isDropdownOpen}
+                >
+                  <i className="fas fa-bell" alt="Notifications"></i>
+                  <span
+                    id="navbarNotificationCounter"
+                    className="badge rounded-pill badge-notification bg-danger"
+                    alt="Notifications"
+                    style={{ color: 'rgb(255, 255, 255)', display: 'none' }}
+                  >
+                    1
+                  </span>
+                </a>
+                <ul
+                  className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`}
+                  id="navbarNotificationContent"
+                  aria-labelledby="navbarDropdownMenuLink"
+                  style={{
+                    width: '250px',
+                    position: 'absolute',
+                    inset: '0px 0px auto auto',
+                    margin: '0px',
+                    transform: 'translate3d(0px, 44px, 0px)',
+                  }}
+                  data-popper-placement="bottom-end"
+                  data-mdb-popper="null"
+                >
+                  <li>
+                    <a
+                      gtm-id="Notifications"
+                      className="dropdown-item text-wrap border-bottom border-gray rounded"
+                      data-notification-date="08/25/2023 16:55"
+                      rel="nofollow noreferrer"
+                    >
+                      <p className="small text-uppercase mb-2">8/25/2023</p>
+                      <p className="mb-0">
+                        {
+                          nontif
+                        }
+
+                      </p>
+                    </a>
+                  </li>
+                  {/* <li>
+                    <a
+                      gtm-id="Notifications"
+                      className="dropdown-item text-wrap"
+                      data-notification-date="08/25/2023 16:55"
+                      rel="nofollow noreferrer"
+                    >
+                      <p className="small text-uppercase mb-2">8/25/2023</p>
+                      <p className="mb-0">
+                        Get free hosting for your frontend project + database with MDB GO.
+                      </p>
+                    </a>
+                  </li> */}
+                </ul>
+              </li>
+              {/* notification end */}
+
             </ul>
 
             
-            {/* {!isAuthenticated() &&  (
+            {!isAuthenticated() &&  (
               <>
                 <form className="d-flex me-3">
                     <button className="btn btn-outline-danger" type="submit">Sign In</button>
@@ -67,16 +173,21 @@ function Navbar() {
               </>  
             )} 
 
-            {isAuthenticated() && ( */}
+            {isAuthenticated() && (
               <>
+
                 <div className="d-flex">
-            <span className="btn btn-outline-danger me-1" onClick={cart} ><i className='fas fa-shopping-cart'><span>{prd?.list.length}</span></i></span>
+                  <span className="btn btn-outline-danger me-1" style={{ border: 'none' }} onClick={cart}>
+                    <i className='fas fa-shopping-cart'>
+                      <span style={{ marginLeft: '5px',fontSize:'10px'}}>{prd?.list.length}</span>
+                    </i>
+                  </span>
                 </div>
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>
               </>
-            {/* )} */}
+             )} 
            
           </div>
         </div>

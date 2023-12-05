@@ -3,8 +3,10 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Restaurant = require('../models/Restaurant');
 const Category = require('../models/Category');
-const Dish = require('../models/Dish');
 
+const Dish = require('../models/Dishe');
+const upload = require('../config/multerConfig')
+const fs = require('fs');
 
 function getManager(req, res) {
     let token = req.cookies.authToken;
@@ -20,21 +22,26 @@ function getManager(req, res) {
 }
 
 async function createRestaurant(req, res) {
-    try {
-        const { name, description, coordinates, categoryId } = req.body;
-        const { lat, long } = coordinates;
+  try {
+    const { name, description, lat, long, categoryId,photo  } = req.body;
 
-        const newRestaurant = new Restaurant({
-            name,
-            description,
-            location: {
-                coordinates: {
-                    lat,
-                    long,
-                },
-            },
-            categories: [categoryId],
-        });
+    
+    // const imageBuffer = Buffer.from(photo, 'base64');
+    // const filename = `restaurant_${Date.now()}.png`;
+    // fs.writeFileSync(`images/uploads/${filename}`, imageBuffer, 'base64');
+
+    const newRestaurant = new Restaurant({
+      name,
+      description,
+      location: {
+        coordinates: {
+          lat,
+          long,
+        },
+      },
+      categories: [categoryId],
+      photo, 
+    });
 
     const savedRestaurant = await newRestaurant.save();
 
@@ -64,7 +71,7 @@ async function createDish(req, res) {
             name,
             description,
             price,
-            restaurant: restaurantId, // Link the dish to a specific restaurant
+            restaurant: restaurantId, 
         });
 
         const savedDish = await newDish.save();
