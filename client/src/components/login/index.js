@@ -30,8 +30,9 @@ const Login = () => {
 		try {
 			const url = "http://localhost:1111/api/auth/login";
 			const { data: res } = await axios.post(url, data);
-			localStorage.setItem("token", JSON.stringify(data));
-      console.log(res.role)
+       console.log(res)
+			localStorage.setItem("token", JSON.stringify(res));
+      // console.log(res.role)
       switch (res.role) {
         case "manager":
           navigate("/api/user/manager/me");
@@ -71,7 +72,7 @@ const Login = () => {
                     <div className="mb-4">
                     <label htmlFor="email" className="form-label">Address Email:</label>
 
-                      <input type="text" id="email" name="email" value={data.email}  className="form-control form-control-lg"  
+                      <input type="text" id="email" name="email" value={data.email}  className="form-control "  
                         {...register("email",{required: "Email is required",pattern: {value:/^\S+@\S+.\S+$/,message: 'Invalid Email Address'}})} 
                         onChange={handleChange}
                       />
@@ -81,7 +82,7 @@ const Login = () => {
                     <div className="mb-4">
                     <label htmlFor="password" className="form-label">Password:</label>
 
-                      <input type="password" id="password" name="password" value={data.password}  className="form-control form-control-lg" 
+                      <input type="password" id="password" name="password" value={data.password}  className="form-control" 
                         {...register('password', {
                           required: 'Password is required',
                           minLength: {
