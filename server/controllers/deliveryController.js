@@ -1,6 +1,7 @@
 const UserModel = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Location = require('../models/Location');
 
 
 function getDelivery(req, res) {
@@ -17,6 +18,21 @@ function getDelivery(req, res) {
     return res.status(403).json({"status": 'failed', "message": "You dont have acces to this role"});
 }
 
+ async function getDeliveryLocation (req, res) {
+    const userId = req.params.userId;
+    console.log("hna",userId);
+    try {
+      const location = await Location.findOne({ orderUserId: userId })
+      
+      return res.status(200).json(location);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  };
 
 
-module.exports = { getDelivery } ;
+
+module.exports = { getDelivery,
+    getDeliveryLocation
+ } ;

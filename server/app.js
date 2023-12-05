@@ -10,11 +10,14 @@ const managerRoutes = require("./routes/managerRoutes");
 const roleRoutes = require("./routes/roleRoutes");
 const orderRoute = require("./routes/orderRoute");
 const swagger = require("./swagger");
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
 const restaurantRoutes = require("./routes/restaurantRoutes");
 const OrderController = require("./controllers/OrderControllrt");
 const {Server} = require("socket.io")
 const http = require("http")
 const mongoose = require("mongoose");
+const Location = require('./models/Location');
 
 connectDb();
 
@@ -40,15 +43,16 @@ const locationSchema = new mongoose.Schema({
   longitude: Number,
 });
 
-const Location = mongoose.model('Location', locationSchema);
+
 
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected`);
 
-  socketIO.on('updateLocation', async (data) => {
+  socket.on('updateLocation', async (data) => {
     // Store the location in MongoDB
-    console.log(data);
-    
+    console.log("recieve", data);
+
+
     const location = new Location({
       orderUserId: data.orderUserId,
       latitude: data.latitude,
@@ -56,8 +60,7 @@ socketIO.on("connection", (socket) => {
     });
     await location.save();
 
-    // Broadcast the location to other connected clients
-    socketIO.broadcast.emit('locationUpdated', {
+    socket.emit('locationUpdated', {
       orderUserId: data.orderUserId,
       latitude: data.latitude,
       longitude: data.longitude,
@@ -75,6 +78,26 @@ app.use(cookieParser());
 
 // Cors Policy
 app.use(cors());
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Documentation',
+      version: '1.0.0',
+      description: 'Documentation for the API endpoints',
+    },
+    servers: [
+      {
+        url: 'http://localhost:1111/',
+      },
+    ],
+  },
+  apis: ['routes/orderRoute.js', 'routes/authRoute.js', 'routes/restaurantRoute.js'],
+};
+
+const specs = swaggerJsdoc(options);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // load routes
 app.use("/api/auth", authRoutes);

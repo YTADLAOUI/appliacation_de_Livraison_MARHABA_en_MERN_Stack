@@ -24,7 +24,7 @@ const Map = () => {
     const [userHouseLocation, setUserHouseLocation] = useState();
     const [deliveryManLocation, setDeliveryManLocation] = useState();
     const positions = [restaurantLocation, userHouseLocation];
-    // const [deliveryToRestaurant, setDeliveryToRestaurant] = useState(true);
+    const [deliveryToRestaurant, setDeliveryToRestaurant] = useState(true);
 
     useEffect(()=>{
     axios.get(`http://localhost:1111/api/order/locations/${userId}`)
@@ -45,61 +45,69 @@ const Map = () => {
 
     
     useEffect(() => {
+
+      const fetchData = async () => {
+        try {
+      const response = await axios.get(`http://localhost:1111/api/user/delivery/location/${userId}`);
+            // console.log(response.data.orderUserId);
+            if (response.data.orderUserId === userId) {
+                  setDeliveryManLocation([response.data.latitude, response.data.longitude]);
+                }
       socket.on('locationUpdated', (data) => {
         console.log("recieve data",data);
-        const { userId: orderUserId, latitude, longitude } = data;
-        // Assuming the orderUserId corresponds to the current user's order
-        if (orderUserId === userId) {
-          setDeliveryManLocation([latitude, longitude]);
-        }
+        // const { userId: orderUserId, latitude, longitude } = data;
       });
-    
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+  fetchData()
       return () => {
         socket.disconnect();
       };
-    }, [userId]);
+    }, [setDeliveryManLocation]);
 
-    // useEffect(() => {
-    //   if (userHouseLocation && restaurantLocation) {
-    //     const deliveryInterval = setInterval(() => {
-    //       let newPosition;
-    //       if (deliveryToRestaurant) {
-    //         const deltaLat = (restaurantLocation[0] - deliveryManLocation[0]) / 100;
-    //         const deltaLng = (restaurantLocation[1] - deliveryManLocation[1]) / 100;
-    //         newPosition = [
-    //           deliveryManLocation[0] + deltaLat,
-    //           deliveryManLocation[1] + deltaLng
-    //         ];
-    //         const distanceToRestaurant = Math.sqrt(
-    //           Math.pow(newPosition[0] - restaurantLocation[0], 2) +
-    //           Math.pow(newPosition[1] - restaurantLocation[1], 2)
-    //         );
-    //         if (distanceToRestaurant < 0.0001) {
-    //           setDeliveryToRestaurant(false);
-    //         }
-    //       } else {
-    //         const deltaLat = (userHouseLocation[0] - deliveryManLocation[0]) / 100;
-    //         const deltaLng = (userHouseLocation[1] - deliveryManLocation[1]) / 100;
-    //         newPosition = [
-    //           deliveryManLocation[0] + deltaLat,
-    //           deliveryManLocation[1] + deltaLng
-    //         ];
-    //         const distanceToUserHouse = Math.sqrt(
-    //           Math.pow(newPosition[0] - userHouseLocation[0], 2) +
-    //           Math.pow(newPosition[1] - userHouseLocation[1], 2)
-    //         );
-    //         if (distanceToUserHouse < 0.0001) {
-    //           clearInterval(deliveryInterval);
-    //         }
-    //       }
-    //       setDeliveryManLocation(newPosition);
-    //     }, 50);
+    useEffect(() => {
+      if (userHouseLocation && restaurantLocation) {
+        const deliveryInterval = setTimeout(() => {
+          let newPosition;
+          if (deliveryToRestaurant) {
+            const deltaLat = (restaurantLocation[0] - deliveryManLocation[0]) / 100;
+            const deltaLng = (restaurantLocation[1] - deliveryManLocation[1]) / 100;
+            newPosition = [
+              deliveryManLocation[0] + deltaLat,
+              deliveryManLocation[1] + deltaLng
+            ];
+            const distanceToRestaurant = Math.sqrt(
+              Math.pow(newPosition[0] - restaurantLocation[0], 2) +
+              Math.pow(newPosition[1] - restaurantLocation[1], 2)
+            );
+            if (distanceToRestaurant < 0.0001) {
+              setDeliveryToRestaurant(false);
+            }
+          } else {
+            const deltaLat = (userHouseLocation[0] - deliveryManLocation[0]) / 100;
+            const deltaLng = (userHouseLocation[1] - deliveryManLocation[1]) / 100;
+            newPosition = [
+              deliveryManLocation[0] + deltaLat,
+              deliveryManLocation[1] + deltaLng
+            ];
+            const distanceToUserHouse = Math.sqrt(
+              Math.pow(newPosition[0] - userHouseLocation[0], 2) +
+              Math.pow(newPosition[1] - userHouseLocation[1], 2)
+            );
+            if (distanceToUserHouse < 0.0001) {
+              clearInterval(deliveryInterval);
+            }
+          }
+          setDeliveryManLocation(newPosition);
+        }, 50);
     
-    //     return () => {
-    //       clearInterval(deliveryInterval);
-    //     };
-    //   }
-    // }, [restaurantLocation, userHouseLocation, deliveryManLocation, deliveryToRestaurant]);
+        return () => {
+          clearInterval(deliveryInterval);
+        };
+      }
+    }, [restaurantLocation, userHouseLocation, deliveryManLocation, deliveryToRestaurant]);
     
     
     if(!userHouseLocation){
@@ -121,7 +129,8 @@ const Map = () => {
         <UserHouseMarker position={userHouseLocation} />
         <DeliveryManMarker position={deliveryManLocation} />
         <Polyline positions={positions} color="red" />
-      </MapContainer>):(<div className="d-flex justify-content-center align-items-center" style={{ height: '75vh' }}>
+      </MapContainer>
+      ):(<div className="d-flex justify-content-center align-items-center" style={{ height: '75vh' }}>
       <p className="text-center fs-4">You Have No Order To Track For This Moment</p>
     </div>)}
       </>

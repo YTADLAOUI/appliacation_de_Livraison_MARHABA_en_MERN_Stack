@@ -30,15 +30,6 @@ const ClientOrders = () => {
         }
       }
 
-      // useEffect(()=>{
-      // axios.get(`http://localhost:1111/api/order/userOrders/${userId}`)
-      // .then(res => {
-      //     const order = res.data;
-      //     console.log(order);
-      //     setOrder(order)
-      //     })
-      // },[])
-
       useEffect(() => {
         const fetchData = async () => {
           try {
@@ -53,12 +44,10 @@ const ClientOrders = () => {
             setLoading(false);
           } catch (error) {
             console.error('Error fetching orders:', error);
-            // Set loading to false in case of an error.
             setLoading(false);
           }
         };
     
-        // Call the fetchData function.
         fetchData();
       }, [userId]);
 

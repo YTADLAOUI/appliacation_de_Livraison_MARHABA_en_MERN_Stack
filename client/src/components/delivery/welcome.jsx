@@ -18,7 +18,7 @@ const DeliveryWelcomePage = () => {
     };
     const [orders, setOrder] = useState([]);
     const [loading, setLoading] = useState(true);
-
+    
     const handelClick = async (orderId, orderUserId) => {
       try {
 
@@ -31,7 +31,7 @@ const DeliveryWelcomePage = () => {
             latitude,
             longitude,
           });
-          });
+        });
     
         await axios.post("http://localhost:1111/api/order/Inprogress/Order", {orderId})
 
@@ -42,16 +42,6 @@ const DeliveryWelcomePage = () => {
         console.log(error);
       }
     }
-
-    // useEffect(()=>{
-    // axios.get(`http://localhost:1111/api/order/Accepted/Order`)
-    // .then(res => {
-    //     // console.log(res);
-    //     const order = res.data;
-    //     console.log(order);
-    //     setOrder(order)
-    //     })
-    // },[])
 
     useEffect(() => {
       const fetchData = async () => {
@@ -67,12 +57,9 @@ const DeliveryWelcomePage = () => {
           setLoading(false);
         } catch (error) {
           console.error('Error fetching orders:', error);
-          // Set loading to false in case of an error.
           setLoading(false);
         }
       };
-  
-      // Call the fetchData function.
       fetchData();
     }, []);
 
