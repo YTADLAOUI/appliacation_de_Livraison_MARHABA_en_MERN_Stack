@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node app",
     "dev": "nodemon app",
+    "tests": "jest",
     "swagger": "node swagger.js"
   },
   "keywords": [],
@@ -13,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^8.2.0",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
