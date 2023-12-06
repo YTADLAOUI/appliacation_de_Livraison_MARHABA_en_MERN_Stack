@@ -56,8 +56,6 @@ function App() {
 				<Route path="/restaurants/:id/dishes" element={<RestaurantDishes/>} />
 				<Route path="/restaurants" element={<HomeRestaut/>} />
                 
-
-
 				<Route path="/" element={<Navigate replace to="/login" />} />
 			<Route path="/checkOut" element={<CheckOut/>} />
 			<Route path="/no" element={<ManagerNontification/>} />
