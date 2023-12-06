@@ -27,7 +27,7 @@ function Navbar() {
     .catch()
   }
  const roleNotification= JSON.parse(localStorage.getItem('token'));
-  console.log(roleNotification.role)
+  console.log(roleNotification?.role)
   useEffect(() => {
     const socket = io('http://localhost:1111'); 
 
@@ -84,12 +84,7 @@ function Navbar() {
               <li className="nav-item">
                 <a className="nav-link">Events</a>
               </li> */}
-              <li className="nav-item ">
-                <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
-              </li>
+              
 
               {/* notification start*/}
               <li className={`nav-item me-3 me-lg-0 dropdown ml-auto ${isDropdownOpen ? 'show' : ''}`}>
@@ -176,10 +171,12 @@ function Navbar() {
 
             {isAuthenticated() && (
               <>
-<<<<<<< HEAD
-              <button>me</button>
-=======
-
+              <li className="nav-item ">
+                <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
+              </li>
                 <div className="d-flex">
                   <span className="btn btn-outline-danger me-1" style={{ border: 'none' }} onClick={cart}>
                     <i className='fas fa-shopping-cart'>
@@ -187,7 +184,6 @@ function Navbar() {
                     </i>
                   </span>
                 </div>
->>>>>>> 01e245949033a7cdbb29b79345aa5d024ddedee9
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>
