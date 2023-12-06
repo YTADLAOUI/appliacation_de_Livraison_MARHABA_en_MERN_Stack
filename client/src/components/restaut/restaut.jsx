@@ -44,7 +44,7 @@ const RestaurantComponent = ({ restaurant }) => {
           </Card.Text>
           {/* Button for adding to cart or performing any action */}
           <Container>
-            <Button onClick={handleClickAddToCart}>Add to Cart</Button>
+            {/* <Button onClick={handleClickAddToCart}>Add to Cart</Button> */}
           </Container>
         </Card.Body>
       </Card>

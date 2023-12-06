@@ -46,6 +46,7 @@ function App() {
 				<Route path="/send-reset-password-email" element={<ForgotPassword />} />
 				<Route path="/reset-password" element={<PasswordReset />} />
 				<Route path="/home" element={<HomeScreen/>} />
+				<Route path="/restaurants/:id/dishesHome" element={<HomeScreen/>} />
 				<Route path="/restaurants/:id/dishesHome" element={<Product/>} />
 				<Route path="//cartShopping" element={<CartShopping/>} />
 				<Route path="/add_restaut" element={<AddRestaurantForm/>} />
