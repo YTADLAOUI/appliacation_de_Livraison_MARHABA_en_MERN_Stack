@@ -27,7 +27,7 @@ function Navbar() {
     .catch()
   }
  const roleNotification= JSON.parse(localStorage.getItem('token'));
-  console.log(roleNotification.role)
+  console.log(roleNotification?.role)
   useEffect(() => {
     const socket = io('http://localhost:1111'); 
 
@@ -38,7 +38,7 @@ function Navbar() {
       console.log('Order details:', data.order);
       console.log('User details:', data.user);
       const roleNotification= JSON.parse(localStorage.getItem('token'));
-        if(roleNotification.role=="manager") setNontif(data.message);
+        if(roleNotification?.role=="manager") setNontif(data.message);
        const managerId="12345FDEFA";
        console.log(managerId)
       if (data && data.order && data.order.manager === managerId) {

@@ -29,6 +29,9 @@ import AddDishForm from "./components/manager/AddDishForm";
 import RestaurantDishes from "./components/manager/RestaurantDishes";
 import ManagerNontification from "./components/orders/managerNontification";
 import HomeRestaut from "./components/restaut/homeRestaut"
+import Map from "./components/tracking/Map";
+import Add_restaut from "./components/manager/add_restaut";
+import ClientOrders from "./components/client/ClientOrders";
 function App() {
 	// const user = localStorage.getItem("token");
 
