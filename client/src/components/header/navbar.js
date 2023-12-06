@@ -103,17 +103,17 @@ function Navbar() {
 
             {isAuthenticated() && (
               <>
-              <li className="nav-item ">
+              <div className="nav-item ">
                 <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
-              </li>
-              <li className="nav-item">
+              </div>
+              <div className="nav-item">
                 <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
-              </li>
+              </div>
                 <div className="d-flex">
                   
               {/* notification start*/}
-              <li className={`nav-item me-3 me-lg-0 dropdown ml-auto ${isDropdownOpen ? 'show' : ''}`}>
-                <a
+              <div className={`nav-item me-3 me-lg-0 dropdown ml-auto ${isDropdownOpen ? 'show' : ''}`}>
+                <i
                   onClick={toggleDropdown}
                   className="nav-link dropdown-toggle hidden-arrow show"
                   role="button"
@@ -132,7 +132,7 @@ function Navbar() {
                   >
                     1
                   </span>
-                </a>
+                </i>
                 <ul
                   className={`dropdown-menu dropdown-menu-end ${isDropdownOpen ? 'show' : ''}`}
                   id="navbarNotificationContent"
@@ -177,7 +177,7 @@ function Navbar() {
                     </a>
                   </li> */}
                 </ul>
-              </li>
+              </div>
               {/* notification end */}
                   <span className="btn btn-outline-danger me-1" style={{ border: 'none' }} onClick={cart}>
                     <i className='fas fa-shopping-cart'>
