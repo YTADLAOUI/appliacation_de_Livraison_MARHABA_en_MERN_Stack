@@ -25,23 +25,29 @@ const Map = () => {
     const [deliveryManLocation, setDeliveryManLocation] = useState();
     const positions = [restaurantLocation, userHouseLocation];
     const [deliveryToRestaurant, setDeliveryToRestaurant] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(()=>{
     axios.get(`http://localhost:1111/api/order/locations/${userId}`)
     .then(res => {
         const orderLocations = res.data;
         // Assuming orderLocations is your object
-        const restaurantCoordinates = [orderLocations[0].restaurant_id.location.coordinates.lat,orderLocations[0].restaurant_id.location.coordinates.long];
+        const restaurantCoordinates = [orderLocations[0].restaurant_id.location.coordinates.lat, orderLocations[0].restaurant_id.location.coordinates.long];
         const userHouseCoordinates = [orderLocations[0].trk[0].arrive_latitude, orderLocations[0].trk[0].arrive_longtiude];
-
+        
         // Update state
         if(!userHouseLocation && !restaurantLocation){
           setRestaurantLocation(restaurantCoordinates);
           setUserHouseLocation(userHouseCoordinates);
         }
-
         })
+        .catch(error => {
+          setError(error.message);
+        });
+  
     },[userHouseLocation,restaurantLocation])
+
+    
 
     
     useEffect(() => {
@@ -108,7 +114,17 @@ const Map = () => {
         };
       }
     }, [restaurantLocation, userHouseLocation, deliveryManLocation, deliveryToRestaurant]);
-    
+
+    if (error) {
+      return (
+        <>
+        < Navbar /> 
+        <div className="d-flex justify-content-center align-items-center" style={{ height: '75vh' }}>
+           <p className="text-center fs-4">You Have No Order To Track For This Moment</p>
+        </div>
+        </>
+      );
+    }
     
     if(!userHouseLocation){
       return <div className="d-flex justify-content-center align-items-center vh-100">
@@ -122,7 +138,7 @@ const Map = () => {
     return (
         <>
       < Navbar /> 
-      {deliveryManLocation ? (
+      {/* {deliveryManLocation ? ( */}
       <MapContainer center={userHouseLocation} zoom={10}>
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
         <RestaurantMarker position={restaurantLocation} />
@@ -130,9 +146,9 @@ const Map = () => {
         <DeliveryManMarker position={deliveryManLocation} />
         <Polyline positions={positions} color="red" />
       </MapContainer>
-      ):(<div className="d-flex justify-content-center align-items-center" style={{ height: '75vh' }}>
+      {/* ):(<div className="d-flex justify-content-center align-items-center" style={{ height: '75vh' }}>
       <p className="text-center fs-4">You Have No Order To Track For This Moment</p>
-    </div>)}
+    </div>)} */}
       </>
     );
   };
