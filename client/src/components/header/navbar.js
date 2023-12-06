@@ -51,6 +51,7 @@ function Navbar() {
     return () => {
       socket.disconnect();
     };
+    
   }, []);
   const cart=()=>{
     navigate("/cartShopping")
