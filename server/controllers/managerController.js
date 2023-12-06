@@ -205,5 +205,5 @@ async function deleteDish(req, res) {
 
 
 
-module.exports = { getManager, createRestaurant, createCategory, createDish ,upload,getDishesForRestaurant,getAllRestaurants,  updateRestaurant,deleteRestaurant,updateDish,
-deleteDish,};
+module.exports = { getManager, createRestaurant, createCategory, createDish ,getDishesForRestaurant,getAllRestaurants,  updateRestaurant,deleteRestaurant,updateDish,
+deleteDish};

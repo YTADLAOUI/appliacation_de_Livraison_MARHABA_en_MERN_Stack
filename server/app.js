@@ -54,7 +54,7 @@ app.use("/api/user", managerRoutes);
 app.use("/api/order", orderRoute);
 app.use("/api/role", roleRoutes);
 app.use("/api/restaut", restaurantRoutes);
-app.use('/api/restaut', restaurantRoutes);
+// app.use('/api/restaut', restaurantRoutes);
 httpServer.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

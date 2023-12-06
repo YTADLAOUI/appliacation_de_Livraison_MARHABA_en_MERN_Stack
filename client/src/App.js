@@ -1,10 +1,7 @@
 import React from "react";
 
 import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
+
 
 // import Main from "./components/main";
 import Signup from "./components/signup";
@@ -33,6 +30,10 @@ import AddDishForm from "./components/manager/AddDishForm";
 import RestaurantDishes from "./components/manager/RestaurantDishes";
 import ManagerNontification from "./components/orders/managerNontification";
 import HomeRestaut from "./components/restaut/homeRestaut"
+import Map from "./components/tracking/Map";
+import Add_restaut from "./components/manager/add_restaut";
+import ClientOrders from "./components/client/ClientOrders";
+
 function App() {
 	// const user = localStorage.getItem("token");
 
