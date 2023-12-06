@@ -17,7 +17,7 @@ let parsedUser;
 if (loginUser) {
   parsedUser = JSON.parse(loginUser);
 }
-const userId = parsedUser.user._id
+const userId = parsedUser?.user?._id
 
 const Map = () => {
     const [restaurantLocation, setRestaurantLocation] = useState();
