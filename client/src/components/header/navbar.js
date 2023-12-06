@@ -63,9 +63,8 @@ function Navbar() {
   }
   console.log(prd.list.length,"nav")
   return (
-    <header>
-      <nav className="navbar navbar-expand-lg ">
-        <div className="container ">
+      <nav className="navbar navbar-expand-lg bg-white fixed-top">
+        <div className="container">
           <a className="navbar-brand">Marhaba</a>
           <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -194,7 +193,6 @@ function Navbar() {
           </div>
         </div>
       </nav>
-    </header>
   );
 }
 
