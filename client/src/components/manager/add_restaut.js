@@ -12,20 +12,30 @@ const AddRestaurantForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append('name', name);
-      formData.append('description', description);
-      formData.append('lat', lat);
-      formData.append('long', long);
-      formData.append('categoryId', categoryId);
+      //const formData = new FormData();
+      
+      // formData.append('name', name);
+      // formData.append('description', description);
+      // formData.append('lat', lat);
+      // formData.append('long', long);
+      // formData.append('categoryId', categoryId);
 
       if (file) {
         const base64 = await convertToBase64(file);
-        formData.append('photo', base64);
+        console.log('fucl eexits')
+        let formData={
+          name:name,
+          description:description,
+          lat:lat,
+          long:long,
+          categoryId:categoryId,
+          photo:base64
+        }
+        
+        // formData.append('photo', base64);
+        console.log(formData)
 
-        const response = await axios.post('http://localhost:1111/api/restaut/restaurants', formData, {
-          headers: { 'Content-Type': 'multipart/form-data' },
-        });
+        const response = await axios.post('http://localhost:1111/api/restaut/creat_restaurants', formData);
 
         console.log('Restaurant added:', response.data);
 
@@ -38,7 +48,8 @@ const AddRestaurantForm = () => {
         setFile(null);
       }
     } catch (error) {
-      console.error('Error adding restaurant:', error.response.data);
+      // console.error('Error adding restaurant:', error.response.data);
+      console.error('Error adding restaurant:', error)
     }
   };
 

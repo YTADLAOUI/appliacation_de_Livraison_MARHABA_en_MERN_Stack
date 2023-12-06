@@ -21,7 +21,7 @@ const Product = ({ product }) => {
   return (
     <>
       <Card className='my-3 p-3 rounded'>
-            <Card.Img src={product.image} variant='top' />      
+            <Card.Img src={`data:image/jpeg;base64,${product.photo}`} variant='top' />      
         <Card.Body>
                     <CardTitle as="div"> 
                       <strong>{product.name}</strong>
