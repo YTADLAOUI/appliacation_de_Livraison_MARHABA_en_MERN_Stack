@@ -37,22 +37,11 @@ const socketIO = new Server(httpServer,{cors: {
 
 app.io = socketIO
 
-const locationSchema = new mongoose.Schema({
-  orderUserId: String,
-  latitude: Number,
-  longitude: Number,
-});
-
-
-
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected`);
 
   socket.on('updateLocation', async (data) => {
-    // Store the location in MongoDB
     console.log("recieve", data);
-
-
     const location = new Location({
       orderUserId: data.orderUserId,
       latitude: data.latitude,
