@@ -17,6 +17,7 @@ const DeliveryWelcomePage = () => {
       overflow: 'hidden'
     };
     const [orders, setOrder] = useState([]);
+    console.log(orders);
     const [loading, setLoading] = useState(true);
     
     const handelClick = async (orderId, orderUserId) => {

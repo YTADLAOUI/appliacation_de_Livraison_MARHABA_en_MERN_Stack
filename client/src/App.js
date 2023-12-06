@@ -51,8 +51,6 @@ function App() {
 			<Route path="/checkOut" element={<CheckOut/>} />
 			<Route path="/no" element={<ManagerNontification/>} />
 			</Routes>
-
-
 		</>	
 	);
 }
