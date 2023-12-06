@@ -86,6 +86,31 @@ function Navbar() {
               </li> */}
               
 
+
+            </ul>
+
+            
+            {!isAuthenticated() &&  (
+              <>
+                <form className="d-flex me-3">
+                    <button className="btn btn-outline-danger" type="submit">Sign In</button>
+                </form>
+                <form className="d-flex">
+                    <button className="btn btn-outline-danger" type="submit">Sign Up</button>
+                </form>
+              </>  
+            )} 
+
+            {isAuthenticated() && (
+              <>
+              <li className="nav-item ">
+                <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
+              </li>
+                <div className="d-flex">
+                  
               {/* notification start*/}
               <li className={`nav-item me-3 me-lg-0 dropdown ml-auto ${isDropdownOpen ? 'show' : ''}`}>
                 <a
@@ -154,30 +179,6 @@ function Navbar() {
                 </ul>
               </li>
               {/* notification end */}
-
-            </ul>
-
-            
-            {!isAuthenticated() &&  (
-              <>
-                <form className="d-flex me-3">
-                    <button className="btn btn-outline-danger" type="submit">Sign In</button>
-                </form>
-                <form className="d-flex">
-                    <button className="btn btn-outline-danger" type="submit">Sign Up</button>
-                </form>
-              </>  
-            )} 
-
-            {isAuthenticated() && (
-              <>
-              <li className="nav-item ">
-                <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
-              </li>
-                <div className="d-flex">
                   <span className="btn btn-outline-danger me-1" style={{ border: 'none' }} onClick={cart}>
                     <i className='fas fa-shopping-cart'>
                       <span style={{ marginLeft: '5px',fontSize:'10px'}}>{prd?.list.length}</span>
