@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { io } from 'socket.io-client';
 
 function Navbar() {
@@ -38,7 +38,7 @@ function Navbar() {
       console.log('Order details:', data.order);
       console.log('User details:', data.user);
       const roleNotification= JSON.parse(localStorage.getItem('token'));
-        if(roleNotification?.role=="manager") setNontif(data.message);
+        if(roleNotification?.role === "manager") setNontif(data.message);
        const managerId="12345FDEFA";
        console.log(managerId)
       if (data && data.order && data.order.manager === managerId) {
