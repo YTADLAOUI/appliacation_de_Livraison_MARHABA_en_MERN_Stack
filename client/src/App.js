@@ -1,14 +1,14 @@
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css'
 import '../src/style.css'
 import './components/sign.css'
-
 
 import Signup from "./components/signup";
 import Login from "./components/login";
 import ClientWelcomePage from "./components/client/welcome";
 import DeliveryWelcomePage from "./components/delivery/welcome";
+
 import ManagerWelcomePage from "./components/manager/welcome";
 import AddRestaurantForm from "./components/manager/add_restaut";
 import EmailVerify from "./components/verifyemail/index";
@@ -26,41 +26,44 @@ import ManagerNontification from "./components/orders/managerNontification";
 import HomeRestaut from "./components/restaut/homeRestaut"
 import Map from "./components/tracking/Map";
 import ClientOrders from "./components/client/ClientOrders";
-
-
-
+import  MiddlewareLogin from "./components/middlewares/MiddlewareLogin"
+import  MiddlewareDelivery from "./components/middlewares/middlewaresDelivery"
+import  MiddlewareManager from "./components/middlewares/MiddlewareManager"
+import  MiddlewareLogOut from "./components/middlewares/MiddlewareLogOut"
 function App() {
 
 	return (
 		<>
 			<Routes>
+				
+				<Route path="/api/user/manager/me" exact element={<MiddlewareManager><ManagerWelcomePage /></MiddlewareManager>} />
+				<Route path="/add_restaut" element={<MiddlewareManager><AddRestaurantForm/></MiddlewareManager>} />
+				<Route path="/manager/orders" element={<MiddlewareManager><ManagerNontification/></MiddlewareManager>} />
+				<Route path="/add_dishe" element={ <MiddlewareManager><AddDishForm/></MiddlewareManager>} />
 				<Route path="/signup" exact element={<Signup />} />
-				<Route path="/login" exact element={<Login />} />
-				<Route path="/api/user/client/me" exact element={<ClientWelcomePage />} />
-				<Route path="/api/user/delivery/me" exact element={<DeliveryWelcomePage />} />
-				<Route path="/api/user/manager/me" exact element={<ManagerWelcomePage />} />
+				<Route path="/login" exact element={<MiddlewareLogOut><Login /></MiddlewareLogOut>} />
+				<Route path="/" exact element={<MiddlewareLogOut><Login /></MiddlewareLogOut>} />
 				<Route path="/active-email/:token" element={<EmailVerify />} />
-				<Route path="/send-reset-password-email" element={<ForgotPassword />} />
 				<Route path="/reset-password" element={<PasswordReset />} />
-				<Route path="/home" element={<HomeScreen/>} />
-				<Route path="/restaurants/:id/dishesHome" element={<HomeScreen/>} />
-				<Route path="/restaurants/:id/dishesHome" element={<Product/>} />
-				<Route path="//cartShopping" element={<CartShopping/>} />
-				<Route path="/add_restaut" element={<AddRestaurantForm/>} />
-				<Route path="/Dashboard" element={<Dashboard/>} />
+				<Route path="/send-reset-password-email" element={<ForgotPassword />} />
+				<Route path="/api/user/client/me" exact element={ <MiddlewareLogin><ClientWelcomePage /></MiddlewareLogin>} />
+				<Route path="/api/user/delivery/me" exact element={<MiddlewareDelivery><DeliveryWelcomePage /></MiddlewareDelivery>} />
+				<Route path="/restaurants/:id/dishesHome" element={<MiddlewareLogin><HomeScreen/></MiddlewareLogin>} />
+				<Route path="/restaurants/:id/dishesHome" element={<MiddlewareLogin><Product/></MiddlewareLogin>} />
+				<Route path="//cartShopping" element={<MiddlewareLogin><CartShopping/></MiddlewareLogin>} />
+				<Route path="/Dashboard" element={<MiddlewareManager><Dashboard/></MiddlewareManager>} />
 				<Route path="/table" element={<Content/>} />
-				<Route path="/add_dishe" element={<AddDishForm/>} />
-				<Route path="/restaurants/:id/dishes" element={<RestaurantDishes/>} />
-				<Route path="/restaurants" element={<HomeRestaut/>} />
-				<Route path="/ClientOrders" element={<ClientOrders/>} />
-				<Route path="/trackOrder" element={<Map/>} />
-				<Route path="/" element={<Navigate replace to="/login" />} />
-				<Route path="/checkOut" element={<CheckOut/>} />
-				<Route path="/no" element={<ManagerNontification/>} />
+				<Route path="/restaurants/:id/dishes" element={<MiddlewareLogin><RestaurantDishes/></MiddlewareLogin>} />
+				<Route path="/restaurants" element={<MiddlewareLogin><HomeRestaut/></MiddlewareLogin>} />
+				<Route path="/ClientOrders" element={<MiddlewareLogin><ClientOrders/></MiddlewareLogin>} />
+				<Route path="/trackOrder" element={<MiddlewareLogin><Map/></MiddlewareLogin>} />
+			<Route path="/checkOut" element={<MiddlewareLogin><CheckOut/></MiddlewareLogin>} />
+			<Route path="/permition" element={<h1>404 - DON'T HAVE ACCESS TO THIS PAGE</h1>} />
+			
+			
 			</Routes>
 		</>	
 	);
-	
 }
 
 export default App;

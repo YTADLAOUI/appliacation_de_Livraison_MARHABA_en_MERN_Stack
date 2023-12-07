@@ -80,7 +80,7 @@ function Navbar() {
               </li>
               ):roleNotification.role === "manager" ?(
                 <li className="nav-item ">
-                <a className="nav-link" onClick={()=>navigate("/no")}>Dashboard</a>
+                <a className="nav-link" onClick={()=>navigate("/manager/orders")}>Dashboard</a>
               </li>
               ):(
                 <li className="nav-item">
@@ -184,7 +184,7 @@ function Navbar() {
                     </i>
                   </span>
                 </div>
-                ):(<div></div>)}
+                ):(<div className='me-2'></div>)}
                 
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>

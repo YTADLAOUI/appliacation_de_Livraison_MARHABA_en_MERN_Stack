@@ -5,7 +5,7 @@ import L from "leaflet"
 const UserHouseMarker = ({ position }) => {
 
     let homeMark = L.icon({
-        iconUrl:"images/home.png",
+        iconUrl:"images/userNew.png",
         iconSize: [40,40]
     });
 

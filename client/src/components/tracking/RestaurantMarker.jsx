@@ -5,7 +5,7 @@ import L from "leaflet"
 const RestaurantMarker = ({ position }) => {
 
     let restoMark = L.icon({
-        iconUrl:"images/resto1.png",
+        iconUrl:"images/restoNew.png",
         iconSize: [30,30]
     });
 

@@ -14,7 +14,7 @@ const DeliveryManMarker = ({ position }) => {
       }, []);
 
     let dMark = L.icon({
-        iconUrl:"images/Dman.png",
+        iconUrl:"images/delivery-man.png",
         iconSize: [50,50]
     });
 
