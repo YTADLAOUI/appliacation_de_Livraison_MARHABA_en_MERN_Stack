@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import Navbar from '../header/navbar';
+import { Link } from 'react-router-dom';
 
 const style = {
   position: 'absolute',
@@ -30,14 +31,21 @@ const style = {
 };
 const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
+const loginUser = localStorage.getItem("token");
+    let parsedUser;
+    if (loginUser) {
+    parsedUser = JSON.parse(loginUser);
+    }
+    const userName = parsedUser.user.name
+const dashboardStyle = {
+      overflow: 'hidden'
+    };
+
  
 const ManagerNontification = () => {
   const [orders,setOrder]=useState([]);
   const [checked, setChecked] = useState(false);
   const[datas,setDatas]=useState([]);
-   const [user,setUser]=useState([]);
-   const [product,setProduct]=useState([]);
-   const [restaurant,setRestaurant]=useState([]);
    const [open, setOpen] = useState(false);
    const [currentOrder, setCurrentOrder] = useState(null);
   //  const [dataSent, setDataSent] = useState(() => {
@@ -76,6 +84,7 @@ const ManagerNontification = () => {
         prix:order.total_price,
         restaurant:order.restaurant_id
       };
+      console.log("rrrrrrrrrrrrrrr",sendData);
       try {
         const response = await axios.post("http://localhost:1111/api/order/livreur", sendData);
         console.log(response.data);
@@ -113,9 +122,55 @@ const ManagerNontification = () => {
   return (
     <>
     <Navbar></Navbar>
-    {
+   
+
+  <div className="container-fluid" id="dashboard" style={dashboardStyle}>
+      <div className="row vh-100">
+        <div className="col-2 col-md-3 col-lg-2 px-sm-2 px-0 shadow bg-dark">
+          <div id="toTop">
+            <div className="d-flex flex-column align-items-center align-items-sm-start px-3 mt-5 text-white">
+              <ul className="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                <li className="nav-item mb-4 mt-5">
+                  <Link to="/home" className="nav-link align-middle px-0 text-light">
+                    <i className="bi bi-house"></i> <span className="ms-1 d-none d-sm-inline">Home</span>
+                  </Link>
+                </li>
+                <hr />
+                <li className="mb-5">
+                  <Link to="" className="nav-link px-0 align-middle text-light">
+                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">All Orders</span>
+                  </Link>
+                </li>
+                <li className="mb-5">
+                  <Link to="/add_restaut" className="nav-link px-0 align-middle text-light">
+                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Add Restaurant</span>
+                  </Link>
+                </li>
+                <li className="mb-4">
+                  <Link to="/add_dishe" className="nav-link px-0 align-middle text-light">
+                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Add Dish</span>
+                  </Link>
+                </li>
+                <hr />
+                {/* Add more list items as needed */}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-10 col-md-9 col-lg-10 py-2">
+
+          <div className="row items-center me-0 mb-4">
+            <h1 className="col fw-bold fs-2 ms-4 mt-4">Welcome, {userName}!</h1>
+            <p className="fw-bold ms-4">This is your personalized dashboard as a Manager.</p>
+            <p className="fw-bold mb-0 fs-4">Orders List</p>
+          </div>
+          
+          <div >
+
+          {
         orders ? (
-        <TableContainer component={Paper} className='container d-flex justify-content-center align-items-center mt-5'>
+        <TableContainer component={Paper} className='container d-flex bg-warning justify-content-center align-items-center mt-5'>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -132,14 +187,15 @@ const ManagerNontification = () => {
             <TableRow
               key={order._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              className=''
             >
-              <TableCell >{order.user_id.name}</TableCell>
-              <TableCell ><Button onClick={() => handleOpen(order)}>product</Button></TableCell>
-              <TableCell component="th" scope="row">
+              <TableCell className='text-secondary'>{order.user_id.name}</TableCell>
+              <TableCell ><Button onClick={() => handleOpen(order)} className='text-secondary'>product</Button></TableCell>
+              <TableCell component="th" scope="row" className='text-secondary'>
                 {order.status}
               </TableCell>
-              <TableCell >{order.total_price}</TableCell>
-              <TableCell >
+              <TableCell className='text-secondary'>{order.total_price}</TableCell>
+              <TableCell className='text-secondary'>
               <Switch
                       checked={checked[order._id] || false}
                       onChange={(event) => handleChange(order._id, event)}
@@ -158,20 +214,33 @@ const ManagerNontification = () => {
     aria-labelledby="modal-modal-title"
     aria-describedby="modal-modal-description"
   >
-     <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Product ---- Qté
-          </Typography>
+     <Box sx={style} className='border rounded border-warning bg-warning'>
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+            Product Details
+          </Typography> */}
+          <TableHead>
+          <TableRow>
+            <TableCell id="modal-modal-title" variant="h6" component="h2" className='fs-3'>Product Details</TableCell>
+          </TableRow>
+        </TableHead>
+          
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             {currentOrder &&
               currentOrder.menus.map((item) => (
                 <div key={item._id}>
-                  <span>{item._id.name}</span> - <span>{item.quantity}</span>
+                  <p>Order name : {item._id.name}</p> 
+                  <p>Order Quantity : {item.quantity}</p>
                 </div>
               ))}
           </Typography>
         </Box>
   </Modal>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
     </>
   );
 }

@@ -61,8 +61,8 @@ socketIO.on("connection", (socket) => {
   });
 });
 
-
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+// app.use(express.json());
 app.use(cookieParser());
 
 // Cors Policy

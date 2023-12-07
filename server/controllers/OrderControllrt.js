@@ -7,15 +7,11 @@ class OrderController {
   static insertOrder = async(req, res) => {
     try {
       const { position, products, restaurant_id, total, user_id } = req.body;
+      console.log("teeeeeeeeeeee", products);
       const order = new Order({
         user_id: user_id,
         restaurant_id: restaurant_id,
-        menus: [
-          {
-            _id: "65633425d0709fd95d532d70",
-            quantity: "3",
-          },
-        ],
+        menus: products,
         total_price: total,
         trk: position,
       });
