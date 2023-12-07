@@ -6,7 +6,7 @@ const RestaurantMarker = ({ position }) => {
 
     let restoMark = L.icon({
         iconUrl:"images/restoNew.png",
-        iconSize: [30,30]
+        iconSize: [50,50]
     });
 
   return (

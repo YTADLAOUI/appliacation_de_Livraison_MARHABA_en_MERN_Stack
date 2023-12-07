@@ -6,7 +6,7 @@ const UserHouseMarker = ({ position }) => {
 
     let homeMark = L.icon({
         iconUrl:"images/userNew.png",
-        iconSize: [40,40]
+        iconSize: [50,50]
     });
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -29,7 +29,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
+// const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 const loginUser = localStorage.getItem("token");
     let parsedUser;
@@ -142,13 +142,8 @@ const ManagerNontification = () => {
                   </Link>
                 </li>
                 <li className="mb-5">
-                  <Link to="/add_restaut" className="nav-link px-0 align-middle text-light">
-                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Add Restaurant</span>
-                  </Link>
-                </li>
-                <li className="mb-4">
-                  <Link to="/add_dishe" className="nav-link px-0 align-middle text-light">
-                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Add Dish</span>
+                  <Link to="/dashboard" className="nav-link px-0 align-middle text-light">
+                    <i className="bi bi-grid-3x3-gap"></i> <span className="ms-1 d-none d-sm-inline">Add New</span>
                   </Link>
                 </li>
                 <hr />

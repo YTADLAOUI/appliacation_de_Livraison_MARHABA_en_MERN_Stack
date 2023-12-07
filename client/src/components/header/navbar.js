@@ -143,19 +143,6 @@ function Navbar() {
                       </p>
                     </a>
                   </li>
-                  {/* <li>
-                    <a
-                      gtm-id="Notifications"
-                      className="dropdown-item text-wrap"
-                      data-notification-date="08/25/2023 16:55"
-                      rel="nofollow noreferrer"
-                    >
-                      <p className="small text-uppercase mb-2">8/25/2023</p>
-                      <p className="mb-0">
-                        Get free hosting for your frontend project + database with MDB GO.
-                      </p>
-                    </a>
-                  </li> */}
                 </ul>
               </li>
               {/* notification end */}
