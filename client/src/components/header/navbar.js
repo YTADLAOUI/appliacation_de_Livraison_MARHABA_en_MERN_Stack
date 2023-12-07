@@ -27,7 +27,7 @@ function Navbar() {
     .catch()
   }
  const roleNotification= JSON.parse(localStorage.getItem('token'));
-  console.log(roleNotification?.role)
+  // console.log(roleNotification?.role)
   useEffect(() => {
     const socket = io('http://localhost:1111'); 
 
@@ -62,7 +62,7 @@ function Navbar() {
     if(jwt) return JSON.parse(jwt);
     return false
   }
-  console.log(prd.list.length,"nav")
+  // console.log(prd.list.length,"nav")
   return (
     <header>
       <nav className="navbar navbar-expand-lg">

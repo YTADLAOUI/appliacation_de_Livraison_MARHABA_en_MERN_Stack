@@ -24,7 +24,7 @@ const HomeScreen = () => {
     <main>
       <Navbar />
       <Container>
-        <h1 className='my-2'>Latest Products</h1>
+        <h1 className='my-2'>Latest Reastaurantes</h1>
         <Row>
           {restaurants.map((restaurant) => (
             <Col key={restaurant._id} sm={12} md={6} lg={4}>

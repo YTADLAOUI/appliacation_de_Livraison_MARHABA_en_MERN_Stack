@@ -36,7 +36,7 @@ const loginUser = localStorage.getItem("token");
     if (loginUser) {
     parsedUser = JSON.parse(loginUser);
     }
-    const userName = parsedUser.user.name
+    const userName = parsedUser?.user?.name
 const dashboardStyle = {
       overflow: 'hidden'
     };

@@ -41,7 +41,7 @@ const CartShopping = () => {
                 const response= axios.post("http://localhost:1111/api/order/checkOut",data).then( response=>
                 console.log(response.data)
                 ).catch(console.log)
-                navigate("/no")
+                navigate("/restaurants")
             }
             
             console.log(position,data,"hjklkjhghj")
