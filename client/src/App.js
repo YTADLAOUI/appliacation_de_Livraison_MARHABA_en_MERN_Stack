@@ -1,24 +1,19 @@
 import React from "react";
-import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
-// import Main from "./components/main";
+import { Route, Routes, Navigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+import '../src/style.css'
+import './components/sign.css'
+
+
 import Signup from "./components/signup";
 import Login from "./components/login";
 import ClientWelcomePage from "./components/client/welcome";
 import DeliveryWelcomePage from "./components/delivery/welcome";
-
 import ManagerWelcomePage from "./components/manager/welcome";
 import AddRestaurantForm from "./components/manager/add_restaut";
 import EmailVerify from "./components/verifyemail/index";
 import ForgotPassword from "./components/forgotPassword";
 import PasswordReset from "./components/PasswordReset";
-// import Navbar from "./components/header/navbar";
-import 'bootstrap/dist/css/bootstrap.css'
-import '../src/style.css'
-import './components/sign.css'
 import HomeScreen from "./components/add_a_Panies/HomeScreen";
 import CheckOut from "./components/add_a_Panies/checkOut";
 import Product from "./components/add_a_Panies/Product";
@@ -30,16 +25,15 @@ import RestaurantDishes from "./components/manager/RestaurantDishes";
 import ManagerNontification from "./components/orders/managerNontification";
 import HomeRestaut from "./components/restaut/homeRestaut"
 import Map from "./components/tracking/Map";
-import Add_restaut from "./components/manager/add_restaut";
 import ClientOrders from "./components/client/ClientOrders";
+
+
+
 function App() {
-	// const user = localStorage.getItem("token");
 
 	return (
 		<>
-		    {/* <Navbar /> */}
 			<Routes>
-				{/* {user && <Route path="/" exact element={<Main />} />} */}
 				<Route path="/signup" exact element={<Signup />} />
 				<Route path="/login" exact element={<Login />} />
 				<Route path="/api/user/client/me" exact element={<ClientWelcomePage />} />
@@ -60,15 +54,13 @@ function App() {
 				<Route path="/restaurants" element={<HomeRestaut/>} />
 				<Route path="/ClientOrders" element={<ClientOrders/>} />
 				<Route path="/trackOrder" element={<Map/>} />
-                
-
-
 				<Route path="/" element={<Navigate replace to="/login" />} />
-			<Route path="/checkOut" element={<CheckOut/>} />
-			<Route path="/no" element={<ManagerNontification/>} />
+				<Route path="/checkOut" element={<CheckOut/>} />
+				<Route path="/no" element={<ManagerNontification/>} />
 			</Routes>
 		</>	
 	);
+	
 }
 
 export default App;

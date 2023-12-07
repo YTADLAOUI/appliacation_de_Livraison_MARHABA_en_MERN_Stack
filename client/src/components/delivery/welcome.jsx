@@ -47,14 +47,11 @@ const DeliveryWelcomePage = () => {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          // Set loading to true while fetching data.
           setLoading(true);
   
-          // Fetch orders.
           const response = await axios.get(`http://localhost:1111/api/order/Accepted/Order`);
           setOrder(response.data);
   
-          // Set loading to false after fetching data.
           setLoading(false);
         } catch (error) {
           console.error('Error fetching orders:', error);

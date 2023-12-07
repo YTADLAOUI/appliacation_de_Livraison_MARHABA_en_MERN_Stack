@@ -72,13 +72,24 @@ function Navbar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" style={{ display: 'flex', justifyContent: 'flex-end' }} id="navbarSupportedContent">
+          {isAuthenticated() && (
             <ul className="navbar-nav mb-2 mb-lg-0">
-              <li className="nav-item ">
+              {roleNotification.role === "delivery" ? (
+                <li className="nav-item ">
                 <a className="nav-link" onClick={()=>navigate("/api/user/delivery/me")}>Dashboard</a>
               </li>
-              <li className="nav-item">
+              ):roleNotification.role === "manager" ?(
+                <li className="nav-item ">
+                <a className="nav-link" onClick={()=>navigate("/no")}>Dashboard</a>
+              </li>
+              ):(
+                <li className="nav-item">
                 <a className="nav-link" onClick={()=>navigate("/clientOrders")}>Your Orders</a>
               </li>
+              )}
+              
+              
+              
 
               {/* notification start*/}
               <li className={`nav-item me-3 me-lg-0 dropdown ml-auto ${isDropdownOpen ? 'show' : ''}`}>
@@ -150,7 +161,7 @@ function Navbar() {
               {/* notification end */}
 
             </ul>
-
+             )} 
             
             {!isAuthenticated() &&  (
               <>
@@ -165,14 +176,16 @@ function Navbar() {
 
             {isAuthenticated() && (
               <>
-
-                <div className="d-flex">
+                {prd?.list.length !== 0 ? (
+                  <div className="d-flex">
                   <span className="btn btn-outline-danger me-1" style={{ border: 'none' }} onClick={cart}>
                     <i className='fas fa-shopping-cart'>
                       <span style={{ marginLeft: '5px',fontSize:'10px'}}>{prd?.list.length}</span>
                     </i>
                   </span>
                 </div>
+                ):(<div></div>)}
+                
                 <div className="d-flex">
                     <span className="btn btn-outline-danger" onClick={loggOut}>logout</span>
                 </div>

@@ -118,13 +118,23 @@ const ClientOrders = () => {
                 </div>
                 <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
-                    <p className="nav-link m-0 p-0">Order : {order.menus.map((pr) => pr._id.name)}</p>
+                    {/* <p className="nav-link m-0 p-0">Order : {order.menus.map((pr) => pr._id.name)}</p>
                     <p className="nav-link m-0 p-0">Quantity : {order.menus.map((pr) => pr.quantity)}</p>
+                    <p className="nav-link m-0 p-0">Total : {order.total_price} dh</p> */}
+                    <div>
+                    {order.menus.map((pr)=>(
+                      <div>
+                        <p className="nav-link m-0 p-0">Order : {pr._id.name}</p>
+                        <p className="nav-link m-0 p-0">Quantity : {pr.quantity}</p>
+                      </div>
+                    ))}
                     <p className="nav-link m-0 p-0">Total : {order.total_price} dh</p>
+                    </div>
                   </li>
                 </ul>
                 <ul className="navbar-nav mr-auto">
                   <li className="nav-item">
+                    <p className="nav-link m-0 p-0 text-dark mb-2">Your Details : </p>
                     <p className="nav-link m-0 p-0">name : {order.user_id.name}</p>
                     <p className="nav-link m-0 p-0">phone : {order.user_id.phone}</p>
                     <p className="nav-link m-0 p-0">address : {order.user_id.address}</p>
