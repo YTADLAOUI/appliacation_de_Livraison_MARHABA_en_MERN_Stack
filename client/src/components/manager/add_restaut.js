@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Navbar from '../header/navbar';
 
 const AddRestaurantForm = () => {
   const [name, setName] = useState('');
@@ -63,7 +64,9 @@ const AddRestaurantForm = () => {
   };
 
   return (
-    <div className="container">
+    <>
+    <Navbar />
+    <div className="container mt-3">
     <div className="row justify-content-center">
     <div className="col-md-8">
     <form onSubmit={handleSubmit} encType='multipart/form-data'>
@@ -96,6 +99,7 @@ const AddRestaurantForm = () => {
     </div>
     </div>
     </div>
+    </>
   );
 };
 
