@@ -12,11 +12,11 @@ variables:
 
 before_script:
   - echo "Logging in to AWS ECR..."
-   - apk add --no-cache python3 py3-pip
+  - apk add --no-cache python3 py3-pip
   - pip3 install awscli
   - AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
   - AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-  - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+  - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS    --password-stdin $ECR_REGISTRY
   - echo "Logged in successfully."
 
 build_backend:
