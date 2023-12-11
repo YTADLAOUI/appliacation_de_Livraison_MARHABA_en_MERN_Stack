@@ -7,7 +7,7 @@ variables:
   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
   AWS_DEFAULT_REGION: "us-east-1"
-  ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com/testdevops"
+  ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
 
 build_backend:
   stage: build_backend
@@ -39,8 +39,9 @@ deploy:
   services:
     - docker:dind
   script:
-    - echo $AWS_ACCESS_KEY_ID | docker login -u AWS --password-stdin $ECR_REGISTRY
-    - docker push $ECR_REGISTRY/backend:$CI_COMMIT_SHA
-    - docker push $ECR_REGISTRY/frontend:$CI_COMMIT_SHA
+    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 569667774725.dkr.ecr.us-east-1.amazonaws.com
+    - docker build -t testdevops .
+    - docker tag testdevops:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/testdevops:latest
+    - docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/testdevops:latest
   only:
     - main
