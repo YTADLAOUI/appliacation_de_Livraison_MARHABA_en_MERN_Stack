@@ -1,41 +1,49 @@
+stages:
+  - build_backend
+  - build_frontend
+  - test
+  - push_to_ecr
 
+variables:
+  AWS_ACCESS_KEY_ID:
+    value: $AWS_ACCESS_KEY_ID  
+    # protected: true
 
-stages:  
-  - test        # List of stages for jobs, and their order of execution
-  - build
-  - deploy
+  AWS_SECRET_ACCESS_KEY:
+    value: $AWS_SECRET_ACCESS_KEY  
+    # protected: true
 
+  AWS_DEFAULT_REGION: "us-east-1"
+  ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
 
+before_script:
 
-unit-test-job:   # This job runs in the test stage.
-    stage: test
-    image: node:18    # It only starts when the job in the build stage completes successfully.
+ - echo "Logging in to AWS ECR..."
+  - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  - export AWS_DEFAULT_REGION="us-east-1"  
+  - export ECR_REGISTRY="569667774725.dkr.ecr.us-east-1.amazonaws.com" 
+  - AWS_ECR_LOGIN=$(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
+  - echo $AWS_ECR_LOGIN | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+build_backend:
+    stage: build_backend
+    image: docker:latest
+    services:
+        - docker:dind
+
     script:
         - cd server
-        - npm install jest
-        - npm install mongoose
-        - npm run tests
+        - docker build -t $CI_REGISTRY_IMAGE/backend:1.1 .
+        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+        - docker push $CI_REGISTRY_IMAGE/backend:1.1
     only:
       changes:
         - "server/**/*"
 
 
-build-backend-job:       # This job runs in the build stage, which runs first.
-  stage: build
-  image: docker:latest
-  services:
-        - docker:dind
-  script:
-        - cd server
-        - docker build -t $CI_REGISTRY_IMAGE/backend:1.1 .
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-        - docker push $CI_REGISTRY_IMAGE/backend:1.1
-  only:
-    changes:
-        - "server/**/*"
-
-build-frontend-job:       # This job runs in the build stage, which runs first.
-  stage: build
+build_frontend:
+  stage: build_frontend
   image: docker:latest
   services:
         - docker:dind
@@ -47,10 +55,24 @@ build-frontend-job:       # This job runs in the build stage, which runs first.
   only:
     changes:
         - "client/**/*"
-    
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  environment: production
+        - ECR_REGISTRY/frontend:$CI_COMMIT_REF_NAME
+
+test:
+    image: node:18    
+    script:
+        - cd server
+        - npm install jest
+        - npm install mongoose
+        - npm run tests
+    only:
+      changes:
+        - "server/**/*"
+
+push_to_ecr:
+  stage: push_to_ecr
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - docker push $ECR_REGISTRY/backend:$CI_COMMIT_REF_NAME
+    - docker push $ECR_REGISTRY/frontend:$CI_COMMIT_REF_NAME
+
+  only:
+    - main
