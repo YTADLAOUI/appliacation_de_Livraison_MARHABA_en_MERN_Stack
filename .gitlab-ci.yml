@@ -10,10 +10,10 @@ variables:
   ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
 
 build_backend:
-  stage: build_frontend
+  stage: build_backend
   image: docker:latest
   services:
-        - docker:dind
+    - docker:dind
   script:
     - cd server
     - docker build -t $ECR_REGISTRY/backend:$CI_COMMIT_SHA .
@@ -25,9 +25,9 @@ build_frontend:
   stage: build_frontend
   image: docker:latest
   services:
-        - docker:dind
+    - docker:dind
   script:
-    - cd frontend
+    - cd client
     - docker build -t $ECR_REGISTRY/frontend:$CI_COMMIT_SHA .
   only:
     changes:
@@ -39,7 +39,7 @@ deploy:
   services:
     - docker:dind
   script:
-    - docker login -u AWS -p $(aws ecr get-login-password --region $AWS_DEFAULT_REGION) $ECR_REGISTRY
+    - echo $AWS_ACCESS_KEY_ID | docker login -u AWS --password-stdin $ECR_REGISTRY
     - docker push $ECR_REGISTRY/backend:$CI_COMMIT_SHA
     - docker push $ECR_REGISTRY/frontend:$CI_COMMIT_SHA
   only:
