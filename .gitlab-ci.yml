@@ -1,7 +1,7 @@
 stages:
   - build_backend
   - build_frontend
-  - deploy
+  - push_deploy
 
 variables:
   AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
@@ -33,8 +33,8 @@ build_frontend:
     changes:
       - "client/**/*"
 
-deploy:
-  stage: deploy
+push_deploy:
+  stage: push_deploy
   image: docker:latest
   services:
     - docker:dind
@@ -43,6 +43,5 @@ deploy:
     - docker build -t testdevops .
     - docker tag testdevops:latest $ECR_REGISTRY/testdevops:latest
     - docker push $ECR_REGISTRY/testdevops:latest
-  only:
-    - main
+  
 
