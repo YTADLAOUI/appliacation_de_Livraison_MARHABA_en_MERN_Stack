@@ -10,12 +10,12 @@ variables:
   ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
 
 build_backend:
-  stage: build_backend
-  image: node:16
+  stage: build_frontend
+  image: docker:latest
+  services:
+        - docker:dind
   script:
     - cd server
-    - npm install
-    - npm run build
     - docker build -t $ECR_REGISTRY/backend:$CI_COMMIT_SHA .
   only:
     changes:
@@ -23,11 +23,11 @@ build_backend:
 
 build_frontend:
   stage: build_frontend
-  image: node:16
+  image: docker:latest
+  services:
+        - docker:dind
   script:
-    - cd client
-    - npm install
-    - npm run build
+    - cd frontend
     - docker build -t $ECR_REGISTRY/frontend:$CI_COMMIT_SHA .
   only:
     changes:
