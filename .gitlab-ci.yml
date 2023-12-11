@@ -39,9 +39,10 @@ deploy:
   services:
     - docker:dind
   script:
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 569667774725.dkr.ecr.us-east-1.amazonaws.com
+    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
     - docker build -t testdevops .
-    - docker tag testdevops:latest 569667774725.dkr.ecr.us-east-1.amazonaws.com/testdevops:latest
-    - docker push 569667774725.dkr.ecr.us-east-1.amazonaws.com/testdevops:latest
+    - docker tag testdevops:latest $ECR_REGISTRY/testdevops:latest
+    - docker push $ECR_REGISTRY/testdevops:latest
   only:
     - main
+
