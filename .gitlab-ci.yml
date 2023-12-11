@@ -23,7 +23,9 @@ before_script:
   - echo "part 1*************************"
   - export AWS_DEFAULT_REGION="us-east-1"
   - export ECR_REGISTRY="569667774725.dkr.ecr.us-east-1"
+  - echo "part 2*************************"
   - AWS_ECR_LOGIN=$(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
+  - echo "part 1*************************"
   - echo $AWS_ECR_LOGIN | sh
 
 build_backend:
