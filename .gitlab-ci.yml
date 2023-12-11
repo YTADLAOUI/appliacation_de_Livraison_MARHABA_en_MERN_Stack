@@ -15,15 +15,17 @@ variables:
   ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com/testdevops"
 
 before_script:
-
-- aws --version
-- echo "Logging in to AWS ECR..."
-- export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-- export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-- export AWS_DEFAULT_REGION="us-east-1"
-- export ECR_REGISTRY="569667774725.dkr.ecr.us-east-1"
-- AWS_ECR_LOGIN=$(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
-- echo $AWS_ECR_LOGIN | docker login --username AWS --password-stdin $ECR_REGISTRY
+  - aws --version
+  - echo "Logging in to AWS ECR..."
+  - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+  - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+  - echo "part 1 ****************"
+  - export AWS_DEFAULT_REGION="us-east-1"
+  - export ECR_REGISTRY="569667774725.dkr.ecr.us-east-1"
+  - echo "part 2 ****************"
+  - AWS_ECR_LOGIN=$(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
+  - echo $AWS_ECR_LOGIN | docker login --username AWS --password-stdin $ECR_REGISTRY
+  - echo "part 3 ****************"
 
 
 build_backend:
