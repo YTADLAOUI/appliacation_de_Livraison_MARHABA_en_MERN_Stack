@@ -6,73 +6,68 @@ stages:
 
 variables:
   AWS_ACCESS_KEY_ID:
-    value: $AWS_ACCESS_KEY_ID  
-    # protected: true
+    value: $AWS_ACCESS_KEY_ID
 
   AWS_SECRET_ACCESS_KEY:
-    value: $AWS_SECRET_ACCESS_KEY  
-    # protected: true
+    value: $AWS_SECRET_ACCESS_KEY
 
   AWS_DEFAULT_REGION: "us-east-1"
   ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
 
 before_script:
   - echo "Logging in to AWS ECR..."
+  - apk add --no-cache python3 py3-pip
+  - pip3 install --upgrade awscli
   - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
   - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
-  - export AWS_DEFAULT_REGION="us-east-1"  
-  - export ECR_REGISTRY="569667774725.dkr.ecr.us-east-1.amazonaws.com" 
+  - export AWS_DEFAULT_REGION="us-east-1"
+  - export ECR_REGISTRY="569667774725.dkr.ecr.us-east-1"
   - AWS_ECR_LOGIN=$(aws ecr get-login-password --region $AWS_DEFAULT_REGION)
-  - echo $AWS_ECR_LOGIN | docker login --username AWS --password-stdin $ECR_REGISTRY
-
+  - echo $AWS_ECR_LOGIN | sh
 
 build_backend:
-    stage: build_backend
-    image: docker:latest
-    services:
-        - docker:dind
-
-    script:
-        - cd server
-        - docker build -t $CI_REGISTRY_IMAGE/backend:1.1 .
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-        - docker push $CI_REGISTRY_IMAGE/backend:1.1
-    only:
-      changes:
-        - "server/**/*"
-
+  stage: build_backend
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - cd server
+    - docker build -t $CI_REGISTRY_IMAGE/backend:1.1 .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/backend:1.1
+  only:
+    changes:
+      - "server/**/*"
 
 build_frontend:
   stage: build_frontend
   image: docker:latest
   services:
-        - docker:dind
+    - docker:dind
   script:
-        - cd client
-        - docker build -t $CI_REGISTRY_IMAGE/frontend:1.2 .
-        - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-        - docker push $CI_REGISTRY_IMAGE/frontend:1.2
+    - cd client
+    - docker build -t $CI_REGISTRY_IMAGE/frontend:1.2 .
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push $CI_REGISTRY_IMAGE/frontend:1.2
   only:
     changes:
-        - "client/**/*"
-        - ECR_REGISTRY/frontend:$CI_COMMIT_REF_NAME
+      - "client/**/*"
 
 test:
-    image: node:18    
-    script:
-        - cd server
-        - npm install jest
-        - npm install mongoose
-        - npm run tests
-    only:
-      changes:
-        - "server/**/*"
+  image: node:18
+  script:
+    - cd server
+    - npm install jest
+    - npm install mongoose
+    - npm run tests
+  only:
+    changes:
+      - "server/**/*"
 
 push_to_ecr:
   stage: push_to_ecr
   script:
     - docker push $ECR_REGISTRY/backend:$CI_COMMIT_REF_NAME
     - docker push $ECR_REGISTRY/frontend:$CI_COMMIT_REF_NAME
-
   only:
     - main
