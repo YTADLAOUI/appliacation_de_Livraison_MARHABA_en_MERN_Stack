@@ -1,4 +1,5 @@
 stages:
+  - build_images
   - build_backend
   - build_frontend
 
@@ -8,7 +9,7 @@ variables:
   APP_NAME_Backend: "backend"
   APP_NAME_Frontend: "frontend"
   
-build:
+build_images:
   image: docker:20.10.16
   stage: build
   services:
