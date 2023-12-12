@@ -1,19 +1,15 @@
 variables:
-  DOCKER_REGISTRY: 569667774725.dkr.ecr.us-east-1.amazonaws.com
-  AWS_DEFAULT_REGION: us-east-1
-  APP_NAME: backend
+  DOCKER_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
+  AWS_DEFAULT_REGION: "us-east-1"
+  APP_NAME: "backend"
 
 publish:
-  image:
-    name: amazon/aws-cli@sha256:e2a778146a45cb7cdcc55e3051c0de38ea9f180ed88383447f7ead6b0ba5e9a4
-    entrypoint: [""]
+  image: docker:latest
   services:
     - docker:dind
-  before_script:
-    - apk add --update --no-cache curl py-pip
-    - pip install awscli
-    - aws --version
   script:
-    - docker login -u AWS -p $(aws ecr get-login-password --region $AWS_DEFAULT_REGION) $DOCKER_REGISTRY
-    - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_ID .
-    - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_PIPELINE_ID
+    # Login to ECR using AWS CLI installed outside the container
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login -u AWS --password-stdin $DOCKER_REGISTRY
+    # Build and push Docker image
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA .
+    - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
