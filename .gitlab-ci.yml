@@ -45,5 +45,4 @@ build_frontend:
     changes:
       - "client/**/*"
 
-only:
-  - main
+
