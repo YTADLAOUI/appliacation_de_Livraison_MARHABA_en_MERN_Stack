@@ -5,7 +5,7 @@ variables:
 
 publish:
   image:
-    name: amazon/aws-cli
+    name: amazon/aws-cli@sha256:e2a778146a45cb7cdcc55e3051c0de38ea9f180ed88383447f7ead6b0ba5e9a4
     entrypoint: [""]
   services:
     - docker:dind
