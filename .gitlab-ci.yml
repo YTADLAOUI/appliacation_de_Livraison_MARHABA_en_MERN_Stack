@@ -27,7 +27,7 @@ build_backend:
     - cd server
     - docker build -t $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
     - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-    - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG
+    - docker push $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
   only:
     changes:
       - "server/**/*"
@@ -37,14 +37,13 @@ build_frontend:
   image: docker:latest
   script:
     - cd client
-    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG  .
-	- aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG 
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG
 
   only:
     changes:
       - "client/**/*"
 
-   
 only:
   - main
