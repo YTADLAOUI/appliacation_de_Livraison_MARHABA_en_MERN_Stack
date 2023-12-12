@@ -9,7 +9,7 @@ publish:
     - docker:dind
   before_script:
     - apk add --update --no-cache py-pip
-    - pip install awscli docker-compose docker --upgrade
+    - pip install awscli 
 
   script:
   
