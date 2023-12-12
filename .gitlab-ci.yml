@@ -1,7 +1,8 @@
 stages:
   - build_backend
   - build_frontend
-  
+  - push_to_ecr
+
 variables:
   DOCKER_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
   AWS_DEFAULT_REGION: "us-east-1"
@@ -25,7 +26,7 @@ build_backend:
   script:
     - cd server
     - docker build -t $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
-    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - docker push $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
   only:
     changes:
@@ -37,11 +38,12 @@ build_frontend:
   script:
     - cd client
     - docker build -t $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG 
-    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG
 
   only:
     changes:
       - "client/**/*"
 
-
+only:
+  - main
