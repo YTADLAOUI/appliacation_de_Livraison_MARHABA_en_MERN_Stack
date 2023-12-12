@@ -12,6 +12,11 @@ publish:
     - pip install awscli docker-compose docker --upgrade
 
   script:
-    - docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 569667774725.dkr.ecr.us-east-1.amazonaws.com
+  
+    - cd server
     - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA .
+    - docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 569667774725.dkr.ecr.us-east-1.amazonaws.com
     - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
+  only:
+    changes:
+        - "server/**/*"
