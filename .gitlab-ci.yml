@@ -20,6 +20,9 @@ build:
     - aws --version
     - docker --version
 
+  script:
+    - echo "This is the build script for the general build job."
+
 build_backend:
   stage: build_backend
   image: docker:latest
