@@ -8,9 +8,12 @@ publish:
   services:
     - docker:dind
   before_script:
-    - apk add --update --no-cache curl py-pip
+    - apk add --update --no-cache py-pip
     - pip install awscli
   script:
+    # Set AWS credentials directly for non-interactive use
+    - export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+    - export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
     # Get ECR login password using AWS CLI and securely pass it to docker login
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
     # Build and push Docker image
