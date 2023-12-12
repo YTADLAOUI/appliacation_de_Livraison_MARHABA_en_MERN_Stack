@@ -11,7 +11,7 @@ publish:
     - apk add --update --no-cache py-pip
     - pip install awscli
 
-script:
-  - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-  - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA .
-  - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
+  script:
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA .
+    - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
