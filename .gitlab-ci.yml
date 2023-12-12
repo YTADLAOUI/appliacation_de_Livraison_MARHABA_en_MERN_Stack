@@ -1,5 +1,5 @@
 stages:
-  - build_images
+  - prepare_build
   - build_backend
   - build_frontend
 
@@ -8,29 +8,23 @@ variables:
   AWS_DEFAULT_REGION: "us-east-1"
   APP_NAME_Backend: "backend"
   APP_NAME_Frontend: "frontend"
-  
-build_images:
+
+prepare_build:
   image: docker:20.10.16
-  stage: build
   services:
     - docker:20.10.16-dind
-    
   before_script:
     - amazon-linux-extras install docker
     - aws --version
     - docker --version
-
-  script:
-    - echo "This is the build script for the general build job."
 
 build_backend:
   stage: build_backend
   image: docker:latest
   script:
     - cd server
-    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-    - docker push $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_TAG
+    - docker push $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_TAG
   only:
     changes:
       - "server/**/*"
@@ -40,12 +34,8 @@ build_frontend:
   image: docker:latest
   script:
     - cd client
-    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG 
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
-    - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG
-
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_TAG
+    - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_TAG
   only:
     changes:
       - "client/**/*"
-
-
