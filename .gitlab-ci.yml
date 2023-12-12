@@ -1,53 +1,50 @@
 stages:
   - build_backend
   - build_frontend
-  - push_deploy
+  - push_to_ecr
 
 variables:
-  AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-  AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-  AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
-  ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
-
-before_script:
-  - aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
-  - aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
-  - aws configure set region "$AWS_DEFAULT_REGION"
-
+  DOCKER_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
+  AWS_DEFAULT_REGION: "us-east-1"
+  APP_NAME_Backend: "backend"
+  APP_NAME_Frontend: "frontend"
+  
+build:
+  image: docker:20.10.16
+  stage: build
+  services:
+    - docker:20.10.16-dind
+    
+  before_script:
+    - amazon-linux-extras install docker
+    - aws --version
+    - docker --version
+	
 build_backend:
   stage: build_backend
-  image: docker:19.03
-  services:
-    - docker:dind
+  image: docker:latest
   script:
     - cd server
-    - docker build -t $ECR_REGISTRY/backend:$CI_COMMIT_SHA .
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Backend:$CI_COMMIT_REF_SLUG
+    - aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG
   only:
     changes:
       - "server/**/*"
 
 build_frontend:
   stage: build_frontend
-  image: docker:19.03
-  services:
-    - docker:dind
+  image: docker:latest
   script:
     - cd client
-    - docker build -t $ECR_REGISTRY/frontend:$CI_COMMIT_SHA .
+    - docker build -t $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG  .
+	- aws ecr get-login-password | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - docker push $DOCKER_REGISTRY/$APP_NAME_Frontend:$CI_COMMIT_REF_SLUG
+
   only:
     changes:
       - "client/**/*"
 
-push_deploy:
-  stage: push_deploy
-  image: docker:19.03
-  services:
-    - docker:dind
-  script:
-    - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-    - docker build -t $ECR_REGISTRY/testdevops:$CI_COMMIT_SHA .
-    - docker tag $ECR_REGISTRY/testdevops:$CI_COMMIT_SHA $ECR_REGISTRY/testdevops:latest
-    - docker push $ECR_REGISTRY/testdevops:$CI_COMMIT_SHA
-    - docker push $ECR_REGISTRY/testdevops:latest
-  only:
-    - main
+   
+only:
+  - main
