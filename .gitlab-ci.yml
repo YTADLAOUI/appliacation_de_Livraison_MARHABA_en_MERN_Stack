@@ -7,9 +7,12 @@ publish:
   image: docker:latest
   services:
     - docker:dind
+  before_script:
+  - apk add --update --no-cache curl py-pip
+  - pip install awscli
   script:
     # Login to ECR using AWS CLI installed outside the container
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login -u AWS --password-stdin $DOCKER_REGISTRY
+    - docker login -u AWS -p $AWS_ACCESS_KEY_ID:$AWS_SECRET_ACCESS_KEY $DOCKER_REGISTRY
     # Build and push Docker image
     - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA .
     - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
