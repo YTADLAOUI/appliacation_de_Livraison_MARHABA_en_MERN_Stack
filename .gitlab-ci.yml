@@ -41,9 +41,9 @@ push_deploy:
   script:
     - apk add --update --no-cache curl py-pip
     - pip install awscli
-    - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-    - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-    - aws configure set region $AWS_REGION
+    - aws configure set AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+    - aws configure set AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+    - aws configure set region $AWS_DEFAULT_REGION
     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
     - docker build -t testdevops .
     - docker tag testdevops:latest $ECR_REGISTRY/testdevops:latest
