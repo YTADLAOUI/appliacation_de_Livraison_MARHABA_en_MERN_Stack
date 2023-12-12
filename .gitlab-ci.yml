@@ -1,8 +1,7 @@
 stages:
   - build_backend
   - build_frontend
-  - push_to_ecr
-
+  
 variables:
   DOCKER_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
   AWS_DEFAULT_REGION: "us-east-1"
