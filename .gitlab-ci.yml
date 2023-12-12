@@ -12,7 +12,6 @@ publish:
     - pip install awscli
 
   script:
-    - docker pull $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
-    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $DOCKER_REGISTRY
+    - docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 569667774725.dkr.ecr.us-east-1.amazonaws.com
     - docker build -t $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA .
     - docker push $DOCKER_REGISTRY/$APP_NAME:$CI_COMMIT_SHA
