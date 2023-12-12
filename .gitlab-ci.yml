@@ -9,9 +9,14 @@ variables:
   AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
   ECR_REGISTRY: "569667774725.dkr.ecr.us-east-1.amazonaws.com"
 
+before_script:
+  - aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
+  - aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
+  - aws configure set region "$AWS_DEFAULT_REGION"
+
 build_backend:
   stage: build_backend
-  image: docker:latest
+  image: docker:19.03
   services:
     - docker:dind
   script:
@@ -23,7 +28,7 @@ build_backend:
 
 build_frontend:
   stage: build_frontend
-  image: docker:latest
+  image: docker:19.03
   services:
     - docker:dind
   script:
@@ -35,17 +40,14 @@ build_frontend:
 
 push_deploy:
   stage: push_deploy
-  image: docker:latest
+  image: docker:19.03
   services:
     - docker:dind
   script:
-    - aws configure set aws_access_key_id "$AWS_ACCESS_KEY_ID"
-    - aws configure set aws_secret_access_key "$AWS_SECRET_ACCESS_KEY"
-    - aws configure set region "$AWS_DEFAULT_REGION"
     - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-    - docker build -t testdevops .
-    - docker tag testdevops:latest $ECR_REGISTRY/testdevops:latest
+    - docker build -t $ECR_REGISTRY/testdevops:$CI_COMMIT_SHA .
+    - docker tag $ECR_REGISTRY/testdevops:$CI_COMMIT_SHA $ECR_REGISTRY/testdevops:latest
+    - docker push $ECR_REGISTRY/testdevops:$CI_COMMIT_SHA
     - docker push $ECR_REGISTRY/testdevops:latest
   only:
     - main
-
